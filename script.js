@@ -4,9 +4,49 @@ const dots = Array.from(document.querySelectorAll(".slider-dot"));
 const searchInput = document.querySelector("#product-search");
 const productCards = Array.from(document.querySelectorAll(".product-card"));
 const cart = new Map();
+const pageSections = {
+  home: document.querySelector("#home"),
+  shop: document.querySelector("#shop"),
+  categories: document.querySelector("#categories"),
+  about: document.querySelector("#about"),
+  contact: document.querySelector("#contact")
+};
+const supplementalSections = [document.querySelector(".quick-points")];
+const siteFooter = document.querySelector(".site-footer");
+const navigationLinks = Array.from(document.querySelectorAll(".desktop-nav a, .mobile-nav a"));
 let activeSlide = 0;
 let slideTimer;
 let toastTimer;
+
+function showSection(sectionName, scrollToTop = false) {
+  const activeSection = pageSections[sectionName] ? sectionName : "home";
+  Object.entries(pageSections).forEach(([name, section]) => {
+    section.hidden = name !== activeSection;
+  });
+  supplementalSections.forEach((section) => { section.hidden = true; });
+  siteFooter.hidden = activeSection === "home";
+  navigationLinks.forEach((link) => {
+    if (link.hash === `#${activeSection}`) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  });
+  if (scrollToTop) window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a[href^='#']");
+  if (!link || !document.contains(link)) return;
+  const sectionName = link.hash.slice(1);
+  if (!pageSections[sectionName]) return;
+
+  event.preventDefault();
+  if (window.location.hash !== `#${sectionName}`) {
+    window.history.pushState({ section: sectionName }, "", `#${sectionName}`);
+  }
+  showSection(sectionName, true);
+});
+window.addEventListener("popstate", () => showSection(window.location.hash.slice(1), true));
+window.addEventListener("hashchange", () => showSection(window.location.hash.slice(1), true));
+showSection(window.location.hash.slice(1));
 
 function showSlide(index) {
   activeSlide = (index + slides.length) % slides.length;
