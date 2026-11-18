@@ -24,7 +24,7 @@ function showSection(sectionName, scrollToTop = false) {
     section.hidden = name !== activeSection;
   });
   supplementalSections.forEach((section) => { section.hidden = true; });
-  siteFooter.hidden = activeSection === "home";
+  siteFooter.hidden = false;
   navigationLinks.forEach((link) => {
     if (link.hash === `#${activeSection}`) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
