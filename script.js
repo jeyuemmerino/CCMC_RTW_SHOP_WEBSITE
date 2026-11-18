@@ -99,6 +99,16 @@ function cartQuantity() {
   return Array.from(cart.values()).reduce((total, item) => total + item.quantity, 0);
 }
 
+const PRODUCT_INFO = {
+  "CCMC Essential Tee": "A soft, easy everyday tee with a regular fit. Comfortable enough for errands, weekends, and everything in between.",
+  "Active Dry-Fit Shirt": "A lightweight shirt made for training days. Designed to keep you comfortable while you move.",
+  "Weekend Utility Shorts": "Easy-wearing shorts with an everyday comfort cut, great for weekends, casual days, and light workouts.",
+  "Everyday Jogger Pants": "Comfortable jogger pants with a tapered fit, made for rest days, errands, and easy everyday wear.",
+  "Classic Zip Jacket": "A lightweight zip jacket that is easy to layer over your favorite tee on cooler days or after your workout.",
+  "Relaxed Graphic Tee": "A relaxed-fit tee with a casual streetwear look, made for comfortable all-day wear."
+};
+const MAX_QTY = 10;
+
 function renderCart() {
   const quantity = cartQuantity();
   document.querySelector(".cart-count").textContent = quantity;
@@ -108,33 +118,47 @@ function renderCart() {
   items.replaceChildren();
   let subtotal = 0;
 
-  cart.forEach((item, name) => {
+  cart.forEach((item, key) => {
     subtotal += item.price * item.quantity;
     const row = document.createElement("div");
     row.className = "cart-item";
+
+    const thumb = document.createElement("img");
+    thumb.className = "cart-item-image";
+    thumb.src = item.image;
+    thumb.alt = "";
+
     const details = document.createElement("div");
+    details.className = "cart-item-info";
     const title = document.createElement("h3");
-    title.textContent = name;
-    const price = document.createElement("p");
-    price.textContent = `₱${item.price.toLocaleString("en-PH")} each`;
-    details.append(title, price);
+    title.textContent = item.name;
+    const meta = document.createElement("p");
+    meta.textContent = `Size ${item.size} · ₱${item.price.toLocaleString("en-PH")} each`;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "cart-remove";
+    remove.textContent = "Remove";
+    remove.setAttribute("aria-label", `Remove ${item.name}, size ${item.size}, from cart`);
+    remove.addEventListener("click", () => removeFromCart(key));
+    details.append(title, meta, remove);
 
     const controls = document.createElement("div");
     controls.className = "quantity-control";
     const decrease = document.createElement("button");
     decrease.type = "button";
     decrease.textContent = "−";
-    decrease.setAttribute("aria-label", `Remove one ${name}`);
-    decrease.addEventListener("click", () => changeQuantity(name, -1));
+    decrease.setAttribute("aria-label", `Remove one ${item.name}, size ${item.size}`);
+    decrease.addEventListener("click", () => changeQuantity(key, -1));
     const amount = document.createElement("span");
     amount.textContent = item.quantity;
     const increase = document.createElement("button");
     increase.type = "button";
     increase.textContent = "+";
-    increase.setAttribute("aria-label", `Add one ${name}`);
-    increase.addEventListener("click", () => changeQuantity(name, 1));
+    increase.setAttribute("aria-label", `Add one ${item.name}, size ${item.size}`);
+    increase.addEventListener("click", () => changeQuantity(key, 1));
     controls.append(decrease, amount, increase);
-    row.append(details, controls);
+
+    row.append(thumb, details, controls);
     items.append(row);
   });
 
@@ -143,26 +167,101 @@ function renderCart() {
   document.querySelector(".cart-subtotal strong").textContent = `₱${subtotal.toLocaleString("en-PH")}`;
 }
 
-function changeQuantity(name, amount) {
-  const item = cart.get(name);
+function changeQuantity(key, amount) {
+  const item = cart.get(key);
   if (!item) return;
-  item.quantity += amount;
-  if (item.quantity <= 0) cart.delete(name);
+  item.quantity = Math.min(item.quantity + amount, MAX_QTY);
+  if (item.quantity <= 0) cart.delete(key);
   renderCart();
 }
 
-function addToCart(name, price) {
-  const item = cart.get(name);
-  if (item) item.quantity += 1;
-  else cart.set(name, { price, quantity: 1 });
+function removeFromCart(key) {
+  const item = cart.get(key);
+  if (!item) return;
+  cart.delete(key);
   renderCart();
-  showToast(`${name} added to your cart`);
+  showToast(`${item.name} (${item.size}) removed from your cart`);
 }
 
-document.querySelectorAll(".add-to-cart, .quick-add").forEach((button) => {
-  button.addEventListener("click", () => {
-    const addButton = button.closest(".product-card").querySelector(".add-to-cart");
-    addToCart(addButton.dataset.product, Number(addButton.dataset.price));
+function addToCart(name, size, price, image, quantity) {
+  const key = `${name} | ${size}`;
+  const item = cart.get(key);
+  if (item) item.quantity = Math.min(item.quantity + quantity, MAX_QTY);
+  else cart.set(key, { name, size, price, image, quantity });
+  renderCart();
+  showToast(`${name} (${size}) added to your cart`);
+}
+
+const pdModal = document.querySelector(".pd-modal");
+const pdImage = pdModal.querySelector(".pd-image");
+const pdCategory = pdModal.querySelector(".pd-category");
+const pdTitle = pdModal.querySelector(".pd-title");
+const pdPrice = pdModal.querySelector(".pd-price");
+const pdDescription = pdModal.querySelector(".pd-description");
+const pdError = pdModal.querySelector(".pd-error");
+const pdQtyValue = pdModal.querySelector(".pd-qty-value");
+const pdSizeInputs = Array.from(pdModal.querySelectorAll("input[name='pd-size']"));
+let pdProduct = null;
+let pdQuantity = 1;
+let pdLastFocus = null;
+
+function setPdQuantity(value) {
+  pdQuantity = Math.min(Math.max(value, 1), MAX_QTY);
+  pdQtyValue.textContent = pdQuantity;
+}
+
+function openProductDetails(card) {
+  const addButton = card.querySelector(".add-to-cart");
+  const image = card.querySelector(".product-image img");
+  pdProduct = {
+    name: card.dataset.name,
+    category: card.dataset.category,
+    price: Number(addButton.dataset.price),
+    image: image.src
+  };
+  pdImage.src = image.src;
+  pdImage.alt = image.alt;
+  pdCategory.textContent = pdProduct.category;
+  pdTitle.textContent = pdProduct.name;
+  pdPrice.textContent = `₱${pdProduct.price.toLocaleString("en-PH")}`;
+  pdDescription.textContent = PRODUCT_INFO[pdProduct.name] || "A comfortable everyday favorite from CCMC RTW Shop.";
+  pdSizeInputs.forEach((input) => { input.checked = false; });
+  pdError.hidden = true;
+  setPdQuantity(1);
+  pdLastFocus = document.activeElement;
+  pdModal.hidden = false;
+  document.body.classList.add("no-scroll");
+  pdModal.querySelector(".pd-close").focus();
+}
+
+function closeProductDetails() {
+  pdModal.hidden = true;
+  document.body.classList.remove("no-scroll");
+  if (pdLastFocus) pdLastFocus.focus();
+}
+
+pdModal.querySelector(".pd-close").addEventListener("click", closeProductDetails);
+pdModal.querySelector(".pd-backdrop").addEventListener("click", closeProductDetails);
+pdModal.querySelector(".pd-qty-minus").addEventListener("click", () => setPdQuantity(pdQuantity - 1));
+pdModal.querySelector(".pd-qty-plus").addEventListener("click", () => setPdQuantity(pdQuantity + 1));
+pdSizeInputs.forEach((input) => input.addEventListener("change", () => { pdError.hidden = true; }));
+pdModal.querySelector(".pd-add").addEventListener("click", () => {
+  const selected = pdSizeInputs.find((input) => input.checked);
+  if (!selected) {
+    pdError.hidden = false;
+    pdSizeInputs[0].focus();
+    return;
+  }
+  addToCart(pdProduct.name, selected.value, pdProduct.price, pdProduct.image, pdQuantity);
+  closeProductDetails();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !pdModal.hidden) closeProductDetails();
+});
+
+productCards.forEach((card) => {
+  card.querySelectorAll(".product-image img, .product-details h3, .add-to-cart, .quick-add").forEach((element) => {
+    element.addEventListener("click", () => openProductDetails(card));
   });
 });
 
