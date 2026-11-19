@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("member4-login-form");
     const registerForm = document.getElementById("member4-register-form");
@@ -9,20 +8,34 @@ document.addEventListener("DOMContentLoaded", function () {
     const goRegister = document.getElementById("go-register");
     const goLogin = document.getElementById("go-login");
 
+    const heading = document.getElementById("account-heading");
+    const description = document.getElementById("account-description");
     const feedback = document.getElementById("account-feedback");
 
-    if (!loginForm || !registerForm) {
+    if (!loginForm || !registerForm || !feedback) {
         return;
     }
 
-    function showMessage(message, type) {
+    function showFeedback(message, type) {
         feedback.textContent = message;
         feedback.className = type;
     }
 
-    function clearMessage() {
+    function clearFeedback() {
         feedback.textContent = "";
         feedback.className = "";
+    }
+
+    function resetPasswordVisibility() {
+        document.querySelectorAll(".toggle-password").forEach(function (button) {
+            const input = document.getElementById(button.dataset.target);
+
+            if (input) {
+                input.type = "password";
+                button.textContent = "Show";
+                button.setAttribute("aria-label", "Show password");
+            }
+        });
     }
 
     function showLogin() {
@@ -35,7 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
         loginTab.setAttribute("aria-pressed", "true");
         registerTab.setAttribute("aria-pressed", "false");
 
-        clearMessage();
+        heading.textContent = "Welcome back.";
+        description.textContent = "A little closer to your next favorite outfit.";
+
+        clearFeedback();
+        resetPasswordVisibility();
     }
 
     function showRegister() {
@@ -48,7 +65,11 @@ document.addEventListener("DOMContentLoaded", function () {
         loginTab.setAttribute("aria-pressed", "false");
         registerTab.setAttribute("aria-pressed", "true");
 
-        clearMessage();
+        heading.textContent = "Join us.";
+        description.textContent = "Discover a style that feels like you.";
+
+        clearFeedback();
+        resetPasswordVisibility();
     }
 
     loginTab.addEventListener("click", showLogin);
@@ -59,14 +80,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelectorAll(".toggle-password").forEach(function (button) {
         button.addEventListener("click", function () {
-            const passwordInput = document.getElementById(button.dataset.target);
+            const input = document.getElementById(button.dataset.target);
 
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
+            if (!input) {
+                return;
+            }
+
+            if (input.type === "password") {
+                input.type = "text";
                 button.textContent = "Hide";
+                button.setAttribute("aria-label", "Hide password");
             } else {
-                passwordInput.type = "password";
+                input.type = "password";
                 button.textContent = "Show";
+                button.setAttribute("aria-label", "Show password");
             }
         });
     });
@@ -80,17 +107,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const confirmPassword = document.getElementById("confirm-password").value;
 
         if (!name || !email || !password || !confirmPassword) {
-            showMessage("Please complete all fields.", "error");
+            showFeedback("Please complete all fields.", "error");
             return;
         }
 
         if (password.length < 8) {
-            showMessage("Password must contain at least 8 characters.", "error");
+            showFeedback(
+                "Password must contain at least 8 characters.",
+                "error"
+            );
             return;
         }
 
         if (password !== confirmPassword) {
-            showMessage("Passwords do not match.", "error");
+            showFeedback("Passwords do not match.", "error");
             return;
         }
 
@@ -100,8 +130,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById("login-email").value = email;
 
-        showMessage(
-            "Registration form validated successfully! This is a demo. No actual account was created.",
+        showFeedback(
+            `Welcome, ${name}! Your registration form has been validated. This is a demo; no real account was created.`,
             "success"
         );
     });
@@ -113,22 +143,29 @@ document.addEventListener("DOMContentLoaded", function () {
         const password = document.getElementById("login-password").value;
 
         if (!email || !password) {
-            showMessage("Please enter your email and password.", "error");
+            showFeedback("Please enter your email and password.", "error");
             return;
         }
 
         if (password.length < 8) {
-            showMessage("Password must contain at least 8 characters.", "error");
+            showFeedback(
+                "Password must contain at least 8 characters.",
+                "error"
+            );
             return;
         }
 
-        showMessage(
-            "Login form validated successfully! This is a frontend demonstration, not an authenticated session.",
+        showFeedback(
+            "Your sign-in form has been validated. This is a frontend demonstration, not an authenticated session.",
             "success"
         );
 
         loginForm.reset();
+        resetPasswordVisibility();
     });
+
+    loginForm.addEventListener("input", clearFeedback);
+    registerForm.addEventListener("input", clearFeedback);
 
     showLogin();
 });

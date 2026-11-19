@@ -1,113 +1,127 @@
-
 .account-page {
-    background: #faf7f2;
-    color: #3c3028;
+    background: var(--cream);
 }
 
-.account-section {
-    padding-top: 60px;
-    padding-bottom: 60px;
-}
-
-.account-wrapper {
-    max-width: 1050px;
-    margin: auto;
+.account-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #e9ded2;
-    box-shadow: 0 10px 40px rgba(60, 48, 40, 0.08);
+    min-height: calc(100vh - 160px);
 }
 
 .account-image {
-    min-height: 630px;
-    display: flex;
-    align-items: flex-end;
-    background:
-        linear-gradient(rgba(40, 30, 25, 0.1), rgba(40, 30, 25, 0.65)),
-        url("https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85");
-    background-size: cover;
-    background-position: center;
-    color: white;
+    position: relative;
+    min-height: 650px;
+    background: var(--blush);
+    overflow: hidden;
+}
+
+.account-image img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    object-position: center;
+}
+
+.account-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(57, 45, 42, 0.8),
+        rgba(57, 45, 42, 0.08) 75%
+    );
 }
 
 .account-image-content {
-    padding: 40px;
+    position: absolute;
+    bottom: 55px;
+    left: 55px;
+    right: 40px;
+    color: var(--white);
+    z-index: 1;
 }
 
 .account-image-content p {
-    font-size: 12px;
+    font-size: 10px;
     letter-spacing: 3px;
-    margin-bottom: 15px;
+    text-transform: uppercase;
+    margin: 0 0 13px;
 }
 
 .account-image-content h1 {
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: clamp(35px, 5vw, 50px);
-    line-height: 1.2;
-    margin-bottom: 15px;
+    font-size: clamp(38px, 5vw, 65px);
+    letter-spacing: -1px;
+    margin: 0 0 12px;
 }
 
 .account-image-content span {
-    font-size: 15px;
-    line-height: 1.8;
+    font-size: 13px;
+    font-weight: 300;
 }
 
 .account-content {
-    padding: 45px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    padding: 55px 45px;
 }
 
-.account-brand {
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: 25px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 25px;
+.account-inner {
+    width: 100%;
+    max-width: 390px;
+}
+
+.account-inner .m4-kicker {
+    margin-bottom: 12px;
+}
+
+.account-inner h2 {
+    font-size: clamp(35px, 4vw, 49px);
+    letter-spacing: -1px;
+    margin: 0 0 12px;
+}
+
+#account-description {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 0 28px;
 }
 
 .account-tabs {
     display: flex;
-    background: #f1e9e0;
-    border-radius: 6px;
-    padding: 5px;
-    margin-bottom: 30px;
+    margin-bottom: 26px;
+    border-bottom: 1px solid var(--blush);
 }
 
 .account-tab {
     flex: 1;
-    border: none;
-    padding: 12px;
-    border-radius: 4px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
     background: transparent;
-    color: #74675e;
-    font: inherit;
-    font-weight: 600;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0 0 12px;
     cursor: pointer;
+    transition: 0.25s ease;
 }
 
 .account-tab.active {
-    background: #3c3028;
-    color: white;
+    color: var(--rosewood);
+    font-weight: 500;
+    border-bottom-color: var(--rosewood);
+}
+
+.account-tab:hover {
+    color: var(--rosewood);
 }
 
 .account-form[hidden] {
     display: none !important;
-}
-
-.account-form h2 {
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: 34px;
-    margin-bottom: 8px;
-}
-
-.account-description {
-    color: #74675e;
-    margin-bottom: 25px;
 }
 
 .account-form-group {
@@ -116,26 +130,33 @@
 
 .account-form-group label {
     display: block;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--cocoa);
+    margin-bottom: 7px;
 }
 
 .account-form-group input {
-    box-sizing: border-box;
+    display: block;
     width: 100%;
-    padding: 13px 14px;
-    border: 1px solid #d9cbbd;
-    border-radius: 5px;
-    background: #faf7f2;
-    color: #3c3028;
-    font: inherit;
+    padding: 14px 15px;
+    background: var(--white);
+    border: 1px solid #E5D4CB;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--cocoa);
     outline: none;
+    transition: 0.25s ease;
+}
+
+.account-form-group input::placeholder {
+    color: #897872;
 }
 
 .account-form-group input:focus {
-    border-color: #9a7658;
-    box-shadow: 0 0 0 2px rgba(154, 118, 88, 0.15);
+    border-color: var(--rosewood);
+    box-shadow: 0 0 0 2px rgba(145, 103, 91, 0.1);
 }
 
 .password-wrapper {
@@ -143,108 +164,125 @@
 }
 
 .password-wrapper input {
-    padding-right: 70px;
+    padding-right: 65px;
 }
 
 .toggle-password {
     position: absolute;
-    right: 12px;
     top: 50%;
+    right: 14px;
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: #9a7658;
-    font-size: 12px;
-    font-weight: 600;
+    color: var(--rosewood);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
     cursor: pointer;
 }
 
 .account-submit {
     width: 100%;
+    margin-top: 5px;
     padding: 15px;
-    background: #3c3028;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.account-submit:hover {
-    background: #9a7658;
 }
 
 .switch-account {
     text-align: center;
-    font-size: 13px;
-    color: #74675e;
-    margin-top: 22px;
+    font-size: 11px;
+    color: var(--muted);
+    margin: 20px 0 0;
 }
 
 .switch-account button {
-    border: none;
     background: none;
-    color: #9a7658;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
+    border: none;
+    padding: 0 3px;
+    font-family: inherit;
+    color: var(--rosewood);
+    font-weight: 500;
+    font-size: 11px;
     text-decoration: underline;
-}
-
-#account-feedback {
-    font-size: 14px;
-    line-height: 1.6;
-    margin-top: 15px;
-}
-
-#account-feedback.success {
-    padding: 12px;
-    border-radius: 5px;
-    background: #edf7ef;
-    color: #387447;
-}
-
-#account-feedback.error {
-    padding: 12px;
-    border-radius: 5px;
-    background: #fff1f1;
-    color: #b33a3a;
+    text-underline-offset: 3px;
+    cursor: pointer;
 }
 
 .account-demo-note {
-    margin-top: 20px;
+    font-size: 10px;
+    color: var(--muted);
     text-align: center;
-    font-size: 12px;
-    color: #8b8179;
+    margin: 23px 0 0;
 }
 
-@media (max-width: 850px) {
+#account-feedback {
+    display: none;
+    font-size: 12px;
+    margin: 15px 0 0;
+    line-height: 1.7;
+}
+
+#account-feedback.success {
+    display: block;
+    padding: 12px;
+    background: #EDF3EB;
+    color: #426047;
+}
+
+#account-feedback.error {
+    display: block;
+    padding: 12px;
+    background: #FAECEA;
+    color: #A04444;
+}
+
+@media (max-width: 1000px) {
     .account-content {
-        padding: 30px;
+        padding: 45px 30px;
     }
 
     .account-image-content {
-        padding: 25px;
+        left: 30px;
+        bottom: 40px;
     }
 }
 
-@media (max-width: 650px) {
-    .account-wrapper {
+@media (max-width: 768px) {
+    .account-layout {
         grid-template-columns: 1fr;
     }
 
     .account-image {
-        min-height: 250px;
+        min-height: 300px;
     }
 
-    .account-section {
-        padding-top: 25px;
-        padding-bottom: 25px;
+    .account-image-content {
+        left: 6%;
+        bottom: 28px;
+    }
+
+    .account-image-content h1 {
+        font-size: 39px;
     }
 
     .account-content {
-        padding: 25px;
+        padding: 40px 25px 55px;
+    }
+
+    .account-inner {
+        max-width: 450px;
+    }
+}
+
+@media (max-width: 480px) {
+    .account-image {
+        min-height: 250px;
+    }
+
+    .account-content {
+        padding: 35px 22px 45px;
+    }
+
+    .account-image-content span {
+        font-size: 11px;
     }
 }

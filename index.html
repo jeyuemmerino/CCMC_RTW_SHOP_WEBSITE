@@ -1,266 +1,979 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#104b9b">
-  <meta name="description" content="Affordable men's sportswear and ready-to-wear clothing from CCMC RTW Shop in Imus, Cavite.">
-  <title>CCMC RTW Shop </title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FCF9F5">
+    <meta name="description" content="Discover affordable men's sportswear and everyday essentials at CCMC RTW Shop in Imus, Cavite.">
+
+    <title>CCMC RTW — Everyday Essentials</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="script.js" defer></script>
 </head>
+
 <body>
-  <div class="topline">
-    <p>Everyday sportswear, made for your everyday move.</p>
-    <a href="#shop">Shop the collection <span aria-hidden="true">→</span></a>
-  </div>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <button class="icon-button menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
-      <a class="brand" href="#home" aria-label="CCMC RTW Shop home">
-        <span class="brand-mark">C</span>
-        <span class="brand-name">CCMC <strong>RTW</strong><small>SHOP · IMUS, CAVITE</small></span>
-      </a>
-      <nav class="desktop-nav" aria-label="Main navigation">
-        <a href="#home">Home</a>
-        <a href="#shop">Shop</a>
-        <a href="#categories">Categories</a>
-        <a href="#about">About Us</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <div class="header-actions">
-        <form class="search-form" role="search">
-          <label class="sr-only" for="product-search">Search products</label>
-          <button class="search-toggle" type="button" aria-label="Show search">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg>
-          </button>
-          <input id="product-search" type="search" placeholder="Search gear..." autocomplete="off">
-        </form>
-        <button class="icon-button account-button" type="button" aria-label="Your account">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
-        </button>
-        <button class="icon-button cart-button" type="button" aria-label="Open shopping bag, 0 items">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l1 12H4L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
-          <span class="cart-count" aria-live="polite">0</span>
-        </button>
-      </div>
-    </div>
-    <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
-      <a href="#home">Home</a>
-      <a href="#shop">Shop</a>
-      <a href="#categories">Categories</a>
-      <a href="#about">About Us</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-
-  <main>
-    <!-- Promotional image slider -->
-    <section class="hero" id="home" aria-label="Featured promotions">
-      <article class="hero-slide is-active" style="--hero-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=2200&q=85')" aria-hidden="false">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <p class="eyebrow">Built for your everyday</p>
-          <h1>Move with Confidence.<br><span>Style Meets Comfort.</span></h1>
-          <p class="hero-description">Affordable sportswear and ready-to-wear essentials that keep up with every version of you.</p>
-          <a class="button button-white" href="#shop">Shop Now <span aria-hidden="true">↗</span></a>
-        </div>
-        <p class="hero-note">CCMC RTW SHOP <span></span> IMUS, CAVITE</p>
-      </article>
-      <article class="hero-slide" style="--hero-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=2200&q=85')" aria-hidden="true">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <p class="eyebrow">Made to move with you</p>
-          <h2>Comfort in every<br><span>single rep.</span></h2>
-          <p class="hero-description">Discover performance-ready favorites for training days, rest days, and everything between.</p>
-          <a class="button button-white" href="#categories">Explore sportswear <span aria-hidden="true">↗</span></a>
-        </div>
-        <p class="hero-note">CCMC RTW SHOP <span></span> IMUS, CAVITE</p>
-      </article>
-      <article class="hero-slide" style="--hero-image: url('https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=2200&q=85')" aria-hidden="true">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <p class="eyebrow">Your style, your pace</p>
-          <h2>Everyday fit.<br><span>All-day confidence.</span></h2>
-          <p class="hero-description">Easy-to-wear menswear with comfort-first fits and prices that feel just right.</p>
-          <a class="button button-white" href="#shop">Find your fit <span aria-hidden="true">↗</span></a>
-        </div>
-        <p class="hero-note">CCMC RTW SHOP <span></span> IMUS, CAVITE</p>
-      </article>
-      <button class="slider-arrow slider-prev" type="button" aria-label="Previous promotion"><span aria-hidden="true">←</span></button>
-      <button class="slider-arrow slider-next" type="button" aria-label="Next promotion"><span aria-hidden="true">→</span></button>
-      <div class="slider-dots" role="group" aria-label="Choose a promotion">
-        <button class="slider-dot is-active" type="button" aria-label="Show promotion 1" aria-current="true"></button>
-        <button class="slider-dot" type="button" aria-label="Show promotion 2"></button>
-        <button class="slider-dot" type="button" aria-label="Show promotion 3"></button>
-      </div>
-    </section>
-
-    <section class="quick-points" aria-label="Why shop CCMC">
-      <div><span class="point-icon" aria-hidden="true">01</span><p><strong>Everyday value</strong><span>Great style at friendly prices</span></p></div>
-      <div><span class="point-icon" aria-hidden="true">02</span><p><strong>Comfort comes first</strong><span>Fits made for moving freely</span></p></div>
-      <div><span class="point-icon" aria-hidden="true">03</span><p><strong>Proudly from Imus</strong><span>Local finds, easy everyday wear</span></p></div>
-    </section>
-
-    <!-- Shop-by-category links filter the featured products -->
-    <section class="section categories-section" id="categories">
-      <div class="section-heading">
-        <div><p class="eyebrow eyebrow-blue">Find your fit</p><h2>Shop by category</h2></div>
-        <a class="text-link" href="#shop">Shop all styles <span aria-hidden="true">↗</span></a>
-      </div>
-      <div class="category-grid">
-        <a class="category-card" href="#shop" data-category-link="T-Shirts">
-          <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80" alt="Classic men's T-shirt" loading="lazy">
-          <span class="category-label"><span>T-Shirts</span><span class="category-arrow" aria-hidden="true">↗</span></span>
-        </a>
-        <a class="category-card" href="#shop" data-category-link="Sportswear">
-          <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80" alt="Runner wearing active sportswear" loading="lazy">
-          <span class="category-label"><span>Sportswear</span><span class="category-arrow" aria-hidden="true">↗</span></span>
-        </a>
-        <a class="category-card" href="#shop" data-category-link="Shorts">
-          <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=800&q=80" alt="Casual shorts for everyday wear" loading="lazy">
-          <span class="category-label"><span>Shorts</span><span class="category-arrow" aria-hidden="true">↗</span></span>
-        </a>
-        <a class="category-card" href="#shop" data-category-link="Jogging Pants">
-          <img src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=800&q=80" alt="Comfortable jogger pants" loading="lazy">
-          <span class="category-label"><span>Jogging Pants</span><span class="category-arrow" aria-hidden="true">↗</span></span>
-        </a>
-        <a class="category-card" href="#shop" data-category-link="Jackets">
-          <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80" alt="Versatile jacket for layering" loading="lazy">
-          <span class="category-label"><span>Jackets</span><span class="category-arrow" aria-hidden="true">↗</span></span>
-        </a>
-      </div>
-    </section>
-
-    <!-- Sample featured items; prices are shown in Philippine pesos -->
-    <section class="featured-section" id="shop">
-      <div class="section">
-        <div class="section-heading">
-          <div><p class="eyebrow eyebrow-blue">Comfort that moves</p><h2>Featured picks</h2></div>
-          <a class="text-link" href="#shop">Explore the collection <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="product-toolbar">
-          <p class="results-count" aria-live="polite">Our everyday favorites</p>
-          <button class="clear-filter" type="button" hidden>Clear filter <span aria-hidden="true">×</span></button>
-        </div>
-        <div class="product-grid">
-          <article class="product-card" data-category="T-Shirts" data-name="CCMC Essential Tee">
-            <div class="product-image"><img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=850&q=80" alt="Essential men's T-shirt in a relaxed fit" loading="lazy"><span class="product-tag">Everyday essential</span><button class="quick-add" type="button" aria-label="Add CCMC Essential Tee to cart">+</button></div>
-            <div class="product-details"><div><h3>CCMC Essential Tee</h3><p>T-Shirts · Regular fit</p></div><strong>₱349</strong></div>
-            <button class="add-to-cart" type="button" data-product="CCMC Essential Tee" data-price="349">Add to Cart</button>
-          </article>
-          <article class="product-card" data-category="Sportswear" data-name="Active Dry-Fit Shirt">
-            <div class="product-image"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=850&q=80" alt="Men's activewear for training" loading="lazy"><span class="product-tag">Move-ready</span><button class="quick-add" type="button" aria-label="Add Active Dry-Fit Shirt to cart">+</button></div>
-            <div class="product-details"><div><h3>Active Dry-Fit Shirt</h3><p>Sportswear · Lightweight</p></div><strong>₱499</strong></div>
-            <button class="add-to-cart" type="button" data-product="Active Dry-Fit Shirt" data-price="499">Add to Cart</button>
-          </article>
-          <article class="product-card" data-category="Shorts" data-name="Weekend Utility Shorts">
-            <div class="product-image"><img src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=850&q=80" alt="Versatile men's shorts in a comfortable cut" loading="lazy"><span class="product-tag">Easy favorite</span><button class="quick-add" type="button" aria-label="Add Weekend Utility Shorts to cart">+</button></div>
-            <div class="product-details"><div><h3>Weekend Utility Shorts</h3><p>Shorts · Everyday comfort</p></div><strong>₱549</strong></div>
-            <button class="add-to-cart" type="button" data-product="Weekend Utility Shorts" data-price="549">Add to Cart</button>
-          </article>
-          <article class="product-card" data-category="Jogging Pants" data-name="Everyday Jogger Pants">
-            <div class="product-image"><img src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=850&q=80" alt="Men's jogger pants for everyday comfort" loading="lazy"><span class="product-tag">Comfort fit</span><button class="quick-add" type="button" aria-label="Add Everyday Jogger Pants to cart">+</button></div>
-            <div class="product-details"><div><h3>Everyday Jogger Pants</h3><p>Jogging Pants · Tapered fit</p></div><strong>₱799</strong></div>
-            <button class="add-to-cart" type="button" data-product="Everyday Jogger Pants" data-price="799">Add to Cart</button>
-          </article>
-          <article class="product-card" data-category="Jackets" data-name="Classic Zip Jacket">
-            <div class="product-image"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=850&q=80" alt="A classic lightweight jacket for layering" loading="lazy"><span class="product-tag">Layer up</span><button class="quick-add" type="button" aria-label="Add Classic Zip Jacket to cart">+</button></div>
-            <div class="product-details"><div><h3>Classic Zip Jacket</h3><p>Jackets · Lightweight layer</p></div><strong>₱1,099</strong></div>
-            <button class="add-to-cart" type="button" data-product="Classic Zip Jacket" data-price="1099">Add to Cart</button>
-          </article>
-          <article class="product-card" data-category="T-Shirts" data-name="Relaxed Graphic Tee">
-            <div class="product-image"><img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=850&q=80" alt="Relaxed-fit T-shirt with a casual streetwear look" loading="lazy"><span class="product-tag">New favorite</span><button class="quick-add" type="button" aria-label="Add Relaxed Graphic Tee to cart">+</button></div>
-            <div class="product-details"><div><h3>Relaxed Graphic Tee</h3><p>T-Shirts · Relaxed fit</p></div><strong>₱399</strong></div>
-            <button class="add-to-cart" type="button" data-product="Relaxed Graphic Tee" data-price="399">Add to Cart</button>
-          </article>
-        </div>
-        <p class="empty-state" hidden>No styles match that search. Try another keyword or clear the filter.</p>
-      </div>
-    </section>
-
-    <section class="about-section" id="about">
-      <div class="about-photo"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1300&q=85" alt="Staying active in comfortable sportswear" loading="lazy"></div>
-      <div class="about-copy">
-        <p class="eyebrow eyebrow-blue">Your local everyday shop</p>
-        <h2>Style that keeps<br>up with you.</h2>
-        <p>CCMC RTW Shop brings together affordable sportswear and ready-to-wear favorites for men. From Imus, Cavite, we make it easier to find comfortable everyday fits for training, weekends, and everything in between.</p>
-        <a class="button button-blue" href="#categories">Find your everyday fit <span aria-hidden="true">↗</span></a>
-      </div>
-    </section>
-
-    <section class="contact-band" id="contact">
-      <div><p class="eyebrow">Come say hello</p><h2>Good fits, right here in Imus.</h2><p>CCMC RTW Shop · Imus, Cavite, Philippines</p></div>
-      <a class="button button-white" href="#shop">Shop CCMC <span aria-hidden="true">↗</span></a>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-main">
-      <div class="footer-brand">
-        <a class="brand" href="#home" aria-label="CCMC RTW Shop home"><span class="brand-mark">C</span><span class="brand-name">CCMC <strong>RTW</strong><small>SHOP · IMUS, CAVITE</small></span></a>
-        <p>Affordable sportswear made for your everyday move.
-            Proudly based in Imus, Cavite.
-        </p>
-      </div>
-      <div class="footer-column"><h3>Quick Links</h3><a href="#home">Home</a><a href="#shop">Shop</a><a href="#categories">Categories</a><a href="#about">About Us</a></div>
-      <div class="footer-column"><h3>Customer Support</h3><a href="#contact">Contact Us</a><a href="#contact">FAQs</a><a href="#contact">Privacy Policy</a></div>
-      <div class="footer-column"><h3>Social Media</h3><a href="https://www.facebook.com/" target="_blank" rel="noreferrer">Facebook ↗</a><a href="https://www.instagram.com/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="mailto:ccmcrtwshop@gmail.com">Email</a></div>
-    </div>
-    <div class="footer-bottom"><span>© <span id="current-year"></span> CCMC RTW Shop. All Rights Reserved.</span></div>
-  </footer>
-<div class="pd-modal" hidden>
-  <div class="pd-backdrop"></div>
-  <div class="pd-dialog" role="dialog" aria-modal="true" aria-labelledby="pd-title">
-    <button class="pd-close" type="button" aria-label="Close product details">×</button>
-
-    <div class="pd-media">
-      <img class="pd-image" src="" alt="">
+    <div class="topline">
+        <p>Everyday essentials · Proudly from Imus, Cavite</p>
     </div>
 
-    <div class="pd-info">
-      <p class="pd-category"></p>
-      <h2 class="pd-title" id="pd-title"></h2>
-      <p class="pd-price"></p>
-      <p class="pd-description"></p>
+    <header class="site-header">
 
-      <fieldset class="pd-field">
-        <legend>Size</legend>
-        <div class="pd-sizes">
-          <label class="pd-size"><input type="radio" name="pd-size" value="S"><span>S</span></label>
-          <label class="pd-size"><input type="radio" name="pd-size" value="M"><span>M</span></label>
-          <label class="pd-size"><input type="radio" name="pd-size" value="L"><span>L</span></label>
-          <label class="pd-size"><input type="radio" name="pd-size" value="XL"><span>XL</span></label>
+        <div class="header-inner">
+
+            <button class="icon-button menu-toggle"
+                type="button"
+                aria-label="Open menu"
+                aria-expanded="false">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+
+            </button>
+
+            <a class="brand" href="#home" aria-label="CCMC RTW Shop home">
+
+                <span class="brand-name">
+                    CCMC <strong>RTW.</strong>
+                    <small>EVERYDAY ESSENTIALS</small>
+                </span>
+
+            </a>
+
+            <nav class="desktop-nav" aria-label="Main navigation">
+                <a href="#home">Home</a>
+                <a href="#shop">Collection</a>
+                <a href="#categories">Categories</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <div class="header-actions">
+
+                <form class="search-form" role="search">
+
+                    <label class="sr-only" for="product-search">
+                        Search products
+                    </label>
+
+                    <button class="search-toggle"
+                        type="button"
+                        aria-label="Show search">
+
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="10.8" cy="10.8" r="6.8"/>
+                            <path d="m16 16 4.5 4.5"/>
+                        </svg>
+
+                    </button>
+
+                    <input
+                        id="product-search"
+                        type="search"
+                        placeholder="Find your favorites"
+                        autocomplete="off"
+                    >
+
+                </form>
+
+                <button class="icon-button account-button"
+                    type="button"
+                    aria-label="Your account">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="8" r="3.5"/>
+                        <path d="M5 20a7 7 0 0 1 14 0"/>
+                    </svg>
+
+                </button>
+
+                <button class="icon-button cart-button"
+                    type="button"
+                    aria-label="Open shopping bag, 0 items">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 8h14l1 12H4L5 8Z"/>
+                        <path d="M9 9V6a3 3 0 0 1 6 0v3"/>
+                    </svg>
+
+                    <span class="cart-count" aria-live="polite">0</span>
+
+                </button>
+
+            </div>
+
         </div>
-        <p class="pd-error" role="alert" hidden>Please choose a size before adding to your cart.</p>
-      </fieldset>
 
-      <div class="pd-field">
-        <span class="pd-label" id="pd-qty-label">Quantity</span>
-        <div class="pd-qty" role="group" aria-labelledby="pd-qty-label">
-          <button class="pd-qty-minus" type="button" aria-label="Decrease quantity">−</button>
-          <span class="pd-qty-value" aria-live="polite">1</span>
-          <button class="pd-qty-plus" type="button" aria-label="Increase quantity">+</button>
+        <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
+            <a href="#home">Home</a>
+            <a href="#shop">Collection</a>
+            <a href="#categories">Categories</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="account.html">My Account</a>
+        </nav>
+
+    </header>
+
+    <main>
+
+        <section class="hero" id="home" aria-label="Featured collections">
+
+            <article class="hero-slide is-active"
+                style="--hero-image: url('https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=1600&q=85')"
+                aria-hidden="false">
+
+                <div class="hero-overlay"></div>
+
+                <div class="hero-content">
+
+                    <p class="eyebrow">The everyday edit</p>
+
+                    <h1>
+                        Made to move.<br>
+                        <span>Styled to last.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Thoughtfully chosen menswear for wherever
+                        life takes you. Effortless style, everyday comfort.
+                    </p>
+
+                    <a class="button button-white" href="#shop">
+                        Explore collection
+                        <span aria-hidden="true">↗</span>
+                    </a>
+
+                </div>
+
+                <p class="hero-note">THE EVERYDAY COLLECTION — 01</p>
+
+            </article>
+
+            <article class="hero-slide"
+                style="--hero-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=85')"
+                aria-hidden="true">
+
+                <div class="hero-overlay"></div>
+
+                <div class="hero-content">
+
+                    <p class="eyebrow">The active edit</p>
+
+                    <h2>
+                        Move freely.<br>
+                        <span>Live comfortably.</span>
+                    </h2>
+
+                    <p class="hero-description">
+                        Performance-ready essentials designed
+                        for your active everyday lifestyle.
+                    </p>
+
+                    <a class="button button-white" href="#categories">
+                        Discover sportswear
+                        <span aria-hidden="true">↗</span>
+                    </a>
+
+                </div>
+
+                <p class="hero-note">THE ACTIVE COLLECTION — 02</p>
+
+            </article>
+
+            <article class="hero-slide"
+                style="--hero-image: url('https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=1600&q=85')"
+                aria-hidden="true">
+
+                <div class="hero-overlay"></div>
+
+                <div class="hero-content">
+
+                    <p class="eyebrow">The weekend edit</p>
+
+                    <h2>
+                        Less effort.<br>
+                        <span>More style.</span>
+                    </h2>
+
+                    <p class="hero-description">
+                        Relaxed silhouettes and timeless essentials
+                        for your off-duty moments.
+                    </p>
+
+                    <a class="button button-white" href="#shop">
+                        Find your style
+                        <span aria-hidden="true">↗</span>
+                    </a>
+
+                </div>
+
+                <p class="hero-note">THE WEEKEND COLLECTION — 03</p>
+
+            </article>
+
+            <button class="slider-arrow slider-prev"
+                type="button"
+                aria-label="Previous collection">
+                <span aria-hidden="true">←</span>
+            </button>
+
+            <button class="slider-arrow slider-next"
+                type="button"
+                aria-label="Next collection">
+                <span aria-hidden="true">→</span>
+            </button>
+
+            <div class="slider-dots" role="group" aria-label="Choose a collection">
+
+                <button class="slider-dot is-active"
+                    type="button"
+                    aria-label="Show collection 1"
+                    aria-current="true">
+                </button>
+
+                <button class="slider-dot"
+                    type="button"
+                    aria-label="Show collection 2">
+                </button>
+
+                <button class="slider-dot"
+                    type="button"
+                    aria-label="Show collection 3">
+                </button>
+
+            </div>
+
+        </section>
+
+        <section class="quick-points" aria-label="Why shop CCMC">
+
+            <div>
+                <p><strong>Thoughtful essentials</strong></p>
+            </div>
+
+            <div>
+                <p><strong>Comfort in every fit</strong></p>
+            </div>
+
+            <div>
+                <p><strong>Everyday affordability</strong></p>
+            </div>
+
+        </section>
+
+        <section class="section categories-section" id="categories">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow eyebrow-blue">The collection</p>
+                    <h2>Find your everyday fit.</h2>
+                </div>
+
+                <a class="text-link" href="#shop">
+                    View all styles
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+            </div>
+
+            <div class="category-grid">
+
+                <a class="category-card"
+                    href="#shop"
+                    data-category-link="T-Shirts">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=85"
+                        alt="Classic everyday T-shirt"
+                        loading="lazy"
+                    >
+
+                    <span class="category-label">
+                        <span>T-Shirts</span>
+                        <span class="category-arrow" aria-hidden="true">↗</span>
+                    </span>
+
+                </a>
+
+                <a class="category-card"
+                    href="#shop"
+                    data-category-link="Sportswear">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=85"
+                        alt="Active sportswear"
+                        loading="lazy"
+                    >
+
+                    <span class="category-label">
+                        <span>Sportswear</span>
+                        <span class="category-arrow" aria-hidden="true">↗</span>
+                    </span>
+
+                </a>
+
+                <a class="category-card"
+                    href="#shop"
+                    data-category-link="Shorts">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=800&q=85"
+                        alt="Casual everyday shorts"
+                        loading="lazy"
+                    >
+
+                    <span class="category-label">
+                        <span>Shorts</span>
+                        <span class="category-arrow" aria-hidden="true">↗</span>
+                    </span>
+
+                </a>
+
+                <a class="category-card"
+                    href="#shop"
+                    data-category-link="Jogging Pants">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=800&q=85"
+                        alt="Comfortable jogging pants"
+                        loading="lazy"
+                    >
+
+                    <span class="category-label">
+                        <span>Jogging Pants</span>
+                        <span class="category-arrow" aria-hidden="true">↗</span>
+                    </span>
+
+                </a>
+
+                <a class="category-card"
+                    href="#shop"
+                    data-category-link="Jackets">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=85"
+                        alt="Classic layering jacket"
+                        loading="lazy"
+                    >
+
+                    <span class="category-label">
+                        <span>Jackets</span>
+                        <span class="category-arrow" aria-hidden="true">↗</span>
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <section class="featured-section" id="shop">
+
+            <div class="section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <p class="eyebrow eyebrow-blue">Curated for you</p>
+                        <h2>Everyday favorites.</h2>
+                    </div>
+
+                </div>
+
+                <div class="product-toolbar">
+
+                    <p class="results-count" aria-live="polite">
+                        Discover your next wardrobe essential
+                    </p>
+
+                    <button class="clear-filter" type="button" hidden>
+                        Clear filter
+                        <span aria-hidden="true">×</span>
+                    </button>
+
+                </div>
+
+                <div class="product-grid">
+
+                    <article class="product-card"
+                        data-category="T-Shirts"
+                        data-name="CCMC Essential Tee">
+
+                        <div class="product-image">
+
+                            <img
+                                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=850&q=85"
+                                alt="CCMC Essential Tee"
+                                loading="lazy"
+                            >
+
+                            <span class="product-tag">Essential</span>
+
+                            <button class="quick-add"
+                                type="button"
+                                aria-label="Add CCMC Essential Tee to cart">
+                                +
+                            </button>
+
+                        </div>
+
+                        <div class="product-details">
+
+                            <div>
+                                <h3>CCMC Essential Tee</h3>
+                                <p>Regular fit</p>
+                            </div>
+
+                            <strong>₱349</strong>
+
+                        </div>
+
+                        <button class="add-to-cart"
+                            type="button"
+                            data-product="CCMC Essential Tee"
+                            data-price="349">
+                            Add to Cart
+                        </button>
+
+                    </article>
+
+                    <article class="product-card"
+                        data-category="Sportswear"
+                        data-name="Active Dry-Fit Shirt">
+
+                        <div class="product-image">
+
+                            <img
+                                src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=850&q=85"
+                                alt="Active Dry-Fit Shirt"
+                                loading="lazy"
+                            >
+
+                            <span class="product-tag">Activewear</span>
+
+                            <button class="quick-add"
+                                type="button"
+                                aria-label="Add Active Dry-Fit Shirt to cart">
+                                +
+                            </button>
+
+                        </div>
+
+                        <div class="product-details">
+
+                            <div>
+                                <h3>Active Dry-Fit Shirt</h3>
+                                <p>Lightweight</p>
+                            </div>
+
+                            <strong>₱499</strong>
+
+                        </div>
+
+                        <button class="add-to-cart"
+                            type="button"
+                            data-product="Active Dry-Fit Shirt"
+                            data-price="499">
+                            Add to Cart
+                        </button>
+
+                    </article>
+
+                    <article class="product-card"
+                        data-category="Shorts"
+                        data-name="Weekend Utility Shorts">
+
+                        <div class="product-image">
+
+                            <img
+                                src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=850&q=85"
+                                alt="Weekend Utility Shorts"
+                                loading="lazy"
+                            >
+
+                            <span class="product-tag">Weekend edit</span>
+
+                            <button class="quick-add"
+                                type="button"
+                                aria-label="Add Weekend Utility Shorts to cart">
+                                +
+                            </button>
+
+                        </div>
+
+                        <div class="product-details">
+
+                            <div>
+                                <h3>Weekend Utility Shorts</h3>
+                                <p>Everyday comfort</p>
+                            </div>
+
+                            <strong>₱549</strong>
+
+                        </div>
+
+                        <button class="add-to-cart"
+                            type="button"
+                            data-product="Weekend Utility Shorts"
+                            data-price="549">
+                            Add to Cart
+                        </button>
+
+                    </article>
+
+                    <article class="product-card"
+                        data-category="Jogging Pants"
+                        data-name="Everyday Jogger Pants">
+
+                        <div class="product-image">
+
+                            <img
+                                src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=850&q=85"
+                                alt="Everyday Jogger Pants"
+                                loading="lazy"
+                            >
+
+                            <span class="product-tag">Comfort edit</span>
+
+                            <button class="quick-add"
+                                type="button"
+                                aria-label="Add Everyday Jogger Pants to cart">
+                                +
+                            </button>
+
+                        </div>
+
+                        <div class="product-details">
+
+                            <div>
+                                <h3>Everyday Jogger Pants</h3>
+                                <p>Tapered fit</p>
+                            </div>
+
+                            <strong>₱799</strong>
+
+                        </div>
+
+                        <button class="add-to-cart"
+                            type="button"
+                            data-product="Everyday Jogger Pants"
+                            data-price="799">
+                            Add to Cart
+                        </button>
+
+                    </article>
+
+                    <article class="product-card"
+                        data-category="Jackets"
+                        data-name="Classic Zip Jacket">
+
+                        <div class="product-image">
+
+                            <img
+                                src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=850&q=85"
+                                alt="Classic Zip Jacket"
+                                loading="lazy"
+                            >
+
+                            <span class="product-tag">Layering edit</span>
+
+                            <button class="quick-add"
+                                type="button"
+                                aria-label="Add Classic Zip Jacket to cart">
+                                +
+                            </button>
+
+                        </div>
+
+                        <div class="product-details">
+
+                            <div>
+                                <h3>Classic Zip Jacket</h3>
+                                <p>Lightweight layer</p>
+                            </div>
+
+                            <strong>₱1,099</strong>
+
+                        </div>
+
+                        <button class="add-to-cart"
+                            type="button"
+                            data-product="Classic Zip Jacket"
+                            data-price="1099">
+                            Add to Cart
+                        </button>
+
+                    </article>
+
+                    <article class="product-card"
+                        data-category="T-Shirts"
+                        data-name="Relaxed Graphic Tee">
+
+                        <div class="product-image">
+
+                            <img
+                                src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=850&q=85"
+                                alt="Relaxed Graphic Tee"
+                                loading="lazy"
+                            >
+
+                            <span class="product-tag">Casual edit</span>
+
+                            <button class="quick-add"
+                                type="button"
+                                aria-label="Add Relaxed Graphic Tee to cart">
+                                +
+                            </button>
+
+                        </div>
+
+                        <div class="product-details">
+
+                            <div>
+                                <h3>Relaxed Graphic Tee</h3>
+                                <p>Relaxed fit</p>
+                            </div>
+
+                            <strong>₱399</strong>
+
+                        </div>
+
+                        <button class="add-to-cart"
+                            type="button"
+                            data-product="Relaxed Graphic Tee"
+                            data-price="399">
+                            Add to Cart
+                        </button>
+
+                    </article>
+
+                </div>
+
+                <p class="empty-state" hidden>
+                    No styles found. Try another search or clear your filter.
+                </p>
+
+            </div>
+
+        </section>
+
+        <section class="about-section" id="about">
+
+            <div class="about-photo">
+
+                <img
+                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1300&q=85"
+                    alt="Thoughtfully arranged clothing collection"
+                    loading="lazy"
+                >
+
+            </div>
+
+            <div class="about-copy">
+
+                <p class="eyebrow eyebrow-blue">The story behind CCMC</p>
+
+                <h2>
+                    Everyday pieces.<br>
+                    Lasting style.
+                </h2>
+
+                <p>
+                    Based in Imus, Cavite, CCMC RTW Shop brings
+                    together affordable menswear and sportswear
+                    designed for comfort, confidence, and everyday living.
+                </p>
+
+                <a class="button button-blue" href="about.html">
+                    Discover our story
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+            </div>
+
+        </section>
+
+        <section class="contact-band" id="contact">
+
+            <div>
+
+                <p class="eyebrow">Customer care</p>
+
+                <h2>We're here for you.</h2>
+
+                <p>
+                    Have a question about your order or our collection?
+                    We'd love to hear from you.
+                </p>
+
+            </div>
+
+            <a class="button button-white" href="contact.html">
+                Get in touch
+                <span aria-hidden="true">↗</span>
+            </a>
+
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <a class="brand" href="#home" aria-label="CCMC RTW Shop home">
+
+                    <span class="brand-name">
+                        CCMC <strong>RTW.</strong>
+                        <small>EVERYDAY ESSENTIALS</small>
+                    </span>
+
+                </a>
+
+                <p>
+                    Thoughtfully chosen. Made for everyday.
+                    <br>
+                    Imus, Cavite, Philippines.
+                </p>
+
+            </div>
+
+            <div class="footer-column">
+
+                <h3>Explore</h3>
+
+                <a href="#home">Home</a>
+                <a href="#shop">Collection</a>
+                <a href="#categories">Categories</a>
+                <a href="about.html">Our Story</a>
+
+            </div>
+
+            <div class="footer-column">
+
+                <h3>Customer Care</h3>
+
+                <a href="contact.html">Contact Us</a>
+                <a href="account.html">My Account</a>
+
+            </div>
+
+            <div class="footer-column">
+
+                <h3>Connect</h3>
+
+                <a href="https://www.facebook.com/"
+                    target="_blank"
+                    rel="noreferrer">
+                    Facebook ↗
+                </a>
+
+                <a href="https://www.instagram.com/"
+                    target="_blank"
+                    rel="noreferrer">
+                    Instagram ↗
+                </a>
+
+                <a href="mailto:ccmcrtwshop@gmail.com">
+                    Email
+                </a>
+
+            </div>
+
         </div>
-      </div>
 
-      <button class="button button-blue pd-add" type="button">Add to Cart</button>
+        <div class="footer-bottom">
+
+            <span>
+                © <span id="current-year"></span> CCMC RTW Shop.
+                All rights reserved.
+            </span>
+
+        </div>
+
+    </footer>
+
+    <div class="pd-modal" hidden>
+
+        <div class="pd-backdrop"></div>
+
+        <div class="pd-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pd-title">
+
+            <button class="pd-close"
+                type="button"
+                aria-label="Close product details">
+                ×
+            </button>
+
+            <div class="pd-media">
+                <img class="pd-image" alt="">
+            </div>
+
+            <div class="pd-info">
+
+                <p class="pd-category"></p>
+
+                <h2 class="pd-title" id="pd-title"></h2>
+
+                <p class="pd-price"></p>
+
+                <p class="pd-description"></p>
+
+                <fieldset class="pd-field">
+
+                    <legend>Select size</legend>
+
+                    <div class="pd-sizes">
+
+                        <label class="pd-size">
+                            <input type="radio" name="pd-size" value="S">
+                            <span>S</span>
+                        </label>
+
+                        <label class="pd-size">
+                            <input type="radio" name="pd-size" value="M">
+                            <span>M</span>
+                        </label>
+
+                        <label class="pd-size">
+                            <input type="radio" name="pd-size" value="L">
+                            <span>L</span>
+                        </label>
+
+                        <label class="pd-size">
+                            <input type="radio" name="pd-size" value="XL">
+                            <span>XL</span>
+                        </label>
+
+                    </div>
+
+                    <p class="pd-error" role="alert" hidden>
+                        Please select your size.
+                    </p>
+
+                </fieldset>
+
+                <div class="pd-field">
+
+                    <span class="pd-label" id="pd-qty-label">
+                        Quantity
+                    </span>
+
+                    <div class="pd-qty"
+                        role="group"
+                        aria-labelledby="pd-qty-label">
+
+                        <button class="pd-qty-minus"
+                            type="button"
+                            aria-label="Decrease quantity">
+                            −
+                        </button>
+
+                        <span class="pd-qty-value" aria-live="polite">
+                            1
+                        </span>
+
+                        <button class="pd-qty-plus"
+                            type="button"
+                            aria-label="Increase quantity">
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button class="button button-blue pd-add" type="button">
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
     </div>
-  </div>
-</div>
-  <div class="toast" role="status" aria-live="polite"></div>
-  <div class="drawer-backdrop" hidden></div>
-  <aside class="cart-drawer" aria-label="Shopping cart" aria-hidden="true">
-    <div class="drawer-heading"><div><p class="eyebrow eyebrow-blue">CCMC RTW SHOP</p><h2>Your Cart <span class="drawer-count">(0)</span></h2></div><button class="icon-button close-cart" type="button" aria-label="Close shopping cart">×</button></div>
-    <div class="cart-items"></div>
-    <div class="cart-empty"><span aria-hidden="true">◇</span><p>Your cart is ready for a new favorite.</p><button class="button button-blue continue-shopping" type="button">Continue shopping</button></div>
-    <div class="cart-footer" hidden><div class="cart-subtotal"><span>Subtotal</span><strong>₱0</strong></div><p>Delivery fees are calculated when you place your order.</p><button class="button button-blue checkout-button" type="button">Continue to checkout <span aria-hidden="true">→</span></button></div>
-  </aside>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+
+    <div class="drawer-backdrop" hidden></div>
+
+    <aside class="cart-drawer"
+        aria-label="Shopping cart"
+        aria-hidden="true">
+
+        <div class="drawer-heading">
+
+            <div>
+
+                <p class="eyebrow eyebrow-blue">Your favorites</p>
+
+                <h2>
+                    Shopping bag
+                    <span class="drawer-count">(0)</span>
+                </h2>
+
+            </div>
+
+            <button class="icon-button close-cart"
+                type="button"
+                aria-label="Close shopping cart">
+                ×
+            </button>
+
+        </div>
+
+        <div class="cart-items"></div>
+
+        <div class="cart-empty">
+
+            <span aria-hidden="true">◇</span>
+
+            <h3>Your bag is empty.</h3>
+
+            <p>Discover something that feels like you.</p>
+
+            <button class="button button-blue continue-shopping"
+                type="button">
+                Continue shopping
+            </button>
+
+        </div>
+
+        <div class="cart-footer" hidden>
+
+            <div class="cart-subtotal">
+                <span>Subtotal</span>
+                <strong>₱0</strong>
+            </div>
+
+            <p>Delivery fees are calculated at checkout.</p>
+
+            <button class="button button-blue checkout-button"
+                type="button">
+
+                Continue to checkout
+                <span aria-hidden="true">→</span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
 </body>
 </html>

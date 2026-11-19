@@ -1,72 +1,78 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us | CCMC RTW Shop</title>
+
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/about.css">
     <link rel="stylesheet" href="css/contact.css">
 </head>
-<body>
 
-    <div class="announcement">
-        Welcome to CCMC RTW Shop — Find your everyday style!
-    </div>
+<body class="member4">
 
-    <header class="site-header">
-        <nav class="nav container">
-            <a href="index.html" class="logo">CCMC <span>RTW</span></a>
+    <header class="site-header m4-nav">
+        <nav class="nav container" aria-label="Main navigation">
 
-            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+            <a href="index.html" class="logo">
+                CCMC <span>RTW</span>
+            </a>
+
+            <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
 
             <div class="nav-links" id="nav-links">
                 <a href="index.html">Home</a>
                 <a href="shop.html">Shop</a>
                 <a href="about.html">About Us</a>
-                <a href="contact.html" class="active">Contact</a>
+                <a href="contact.html" class="active" aria-current="page">Contact</a>
                 <a href="account.html">Account</a>
                 <a href="cart.html">Cart (<span class="cart-count">0</span>)</a>
             </div>
+
         </nav>
     </header>
 
     <main class="contact-page">
 
-        <section class="contact-hero">
-            <p>WE ARE HERE FOR YOU</p>
-            <h1>Contact Us</h1>
-            <span>We would love to hear from you.</span>
+        <section class="contact-heading container">
+
+            <p class="m4-kicker">Customer care</p>
+
+            <h1>Let's get in touch.</h1>
+
+            <p>
+                We're here to make your shopping experience effortless.
+            </p>
+
         </section>
 
-        <section class="contact-section container">
+        <section class="contact-layout container">
 
             <div class="contact-information">
-                <p class="contact-label">GET IN TOUCH</p>
-                <h2>Let's Talk</h2>
+
+                <h2>We'd love to hear from you.</h2>
 
                 <p class="contact-intro">
-                    Have questions about our products, orders, or
-                    collections? Feel free to reach out to us.
+                    Whether you have a question about your order,
+                    our collections, or simply want to say hello,
+                    feel free to reach out.
                 </p>
 
                 <div class="contact-detail">
-                    <h3>Location</h3>
-                    <p>Manila, Philippines (Sample location)</p>
-                </div>
-
-                <div class="contact-detail">
-                    <h3>Email Address</h3>
+                    <h3>Email</h3>
                     <p>ccmcrtwshop@example.com</p>
                 </div>
 
                 <div class="contact-detail">
-                    <h3>Phone Number</h3>
-                    <p>+63 9XX XXX XXXX</p>
+                    <h3>Location</h3>
+                    <p>Manila, Philippines</p>
                 </div>
 
                 <div class="contact-detail">
-                    <h3>Business Hours</h3>
+                    <h3>Opening hours</h3>
                     <p>Monday – Saturday</p>
                     <p>9:00 AM – 6:00 PM</p>
                 </div>
@@ -74,97 +80,89 @@
             </div>
 
             <div class="contact-form-card">
-                <h2>Send Us a Message</h2>
-                <p>Fill out the form below to get started.</p>
 
                 <form id="member4-contact-form">
 
                     <div class="contact-form-group">
-                        <label for="contact-name">Full Name</label>
-                        <input type="text"
-                               id="contact-name"
-                               placeholder="Enter your full name"
-                               autocomplete="name"
-                               required>
+                        <label for="contact-name">Your name</label>
+
+                        <input
+                            type="text"
+                            id="contact-name"
+                            placeholder="Full name"
+                            autocomplete="name"
+                            required
+                        >
                     </div>
 
                     <div class="contact-form-group">
-                        <label for="contact-email">Email Address</label>
-                        <input type="email"
-                               id="contact-email"
-                               placeholder="Enter your email address"
-                               autocomplete="email"
-                               required>
+                        <label for="contact-email">Email address</label>
+
+                        <input
+                            type="email"
+                            id="contact-email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
                     </div>
 
                     <div class="contact-form-group">
                         <label for="contact-subject">Subject</label>
+
                         <select id="contact-subject" required>
                             <option value="">Select a subject</option>
-                            <option value="product">Product Inquiry</option>
-                            <option value="order">Order Concern</option>
+                            <option value="product">Product inquiry</option>
+                            <option value="order">Order concern</option>
                             <option value="feedback">Feedback</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
 
                     <div class="contact-form-group">
-                        <label for="contact-message">Message</label>
-                        <textarea id="contact-message"
-                                  rows="5"
-                                  minlength="10"
-                                  placeholder="Write your message here..."
-                                  required></textarea>
+                        <label for="contact-message">Your message</label>
+
+                        <textarea
+                            id="contact-message"
+                            rows="5"
+                            minlength="10"
+                            placeholder="How can we help you?"
+                            required
+                        ></textarea>
                     </div>
 
-                    <button type="submit" class="contact-submit">
-                        Send Message
+                    <button type="submit" class="m4-button contact-submit">
+                        Send message
                     </button>
 
                     <p id="contact-feedback" role="status" aria-live="polite"></p>
 
                 </form>
+
             </div>
 
-        </section>
-
-        <section class="contact-bottom">
-            <h2>Looking for Your Next Favorite Outfit?</h2>
-            <p>Explore our collection of ready-to-wear clothing.</p>
-            <a href="shop.html" class="btn">Browse Collection</a>
         </section>
 
     </main>
 
-    <footer class="footer">
-        <div class="container footer-grid">
-            <div>
-                <a href="index.html" class="logo">CCMC <span>RTW</span></a>
-                <p>Your everyday fashion destination.</p>
+    <footer class="m4-footer">
+
+        <div class="container">
+
+            <p>&copy; 2026 CCMC RTW Shop</p>
+
+            <div class="m4-links">
+                <a href="shop.html">Collection</a>
+                <a href="contact.html">Customer care</a>
+                <a href="account.html">My account</a>
             </div>
 
-            <div>
-                <h3>Quick Links</h3>
-                <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="about.html">About Us</a>
-                <a href="contact.html">Contact</a>
-            </div>
-
-            <div>
-                <h3>Customer Support</h3>
-                <a href="account.html">My Account</a>
-                <a href="cart.html">Shopping Cart</a>
-                <a href="contact.html">Contact Us</a>
-            </div>
         </div>
 
-        <div class="footer-bottom">
-            <p>&copy; 2026 CCMC RTW Shop. All rights reserved.</p>
-        </div>
     </footer>
 
     <script src="js/app.js"></script>
     <script src="js/contact.js"></script>
+
 </body>
 </html>

@@ -5,162 +5,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | CCMC RTW Shop</title>
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/about.css">
 </head>
-<body>
 
-    <div class="announcement">
-        Welcome to CCMC RTW Shop — Find your everyday style!
-    </div>
+<body class="member4">
 
-    <header class="site-header">
-        <nav class="nav container">
-            <a href="index.html" class="logo">CCMC <span>RTW</span></a>
+    <header class="site-header m4-nav">
+        <nav class="nav container" aria-label="Main navigation">
 
-            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+            <a href="index.html" class="logo">
+                CCMC <span>RTW</span>
+            </a>
+
+            <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
 
             <div class="nav-links" id="nav-links">
                 <a href="index.html">Home</a>
                 <a href="shop.html">Shop</a>
-                <a href="about.html" class="active">About Us</a>
+                <a href="about.html" class="active" aria-current="page">About Us</a>
                 <a href="contact.html">Contact</a>
                 <a href="account.html">Account</a>
                 <a href="cart.html">Cart (<span class="cart-count">0</span>)</a>
             </div>
+
         </nav>
     </header>
 
     <main class="about-page">
 
-        <section class="about-hero">
-            <p>GET TO KNOW US</p>
-            <h1>Fashion Made for You</h1>
-            <span>Style. Comfort. Confidence.</span>
-        </section>
+        <section class="about-editorial container">
 
-        <section class="brand-story container">
-            <div class="story-image">
-                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1000&q=85"
-                     alt="Fashion boutique interior">
-            </div>
+            <div class="about-copy">
 
-            <div class="story-content">
-                <p class="about-label">OUR STORY</p>
-                <h2>More Than Just Clothing</h2>
+                <p class="m4-kicker">The story behind CCMC</p>
+
+                <h1>
+                    Everyday pieces.<br>
+                    Lasting style.
+                </h1>
 
                 <p>
-                    CCMC RTW Shop is a ready-to-wear clothing shop
-                    that aims to provide stylish, comfortable,
-                    and affordable fashion for everyday wear.
+                    We believe getting dressed should feel effortless.
+                    CCMC RTW brings together versatile, comfortable
+                    fashion for the moments that make up your
+                    everyday life.
                 </p>
 
-                <p>
-                    We believe that fashion is a way to express
-                    individuality and confidence. Our collections
-                    are designed to help customers discover pieces
-                    that reflect their personality and lifestyle.
-                </p>
+                <a class="m4-button" href="shop.html">
+                    Explore the collection
+                </a>
 
-                <a href="shop.html" class="btn">Explore Our Collection</a>
             </div>
+
+            <figure class="about-photo">
+
+                <img
+                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=85"
+                    alt="A thoughtfully arranged clothing boutique"
+                >
+
+                <figcaption>
+                    Thoughtfully chosen. Simply worn.
+                </figcaption>
+
+            </figure>
+
         </section>
 
-        <section class="mission-vision">
-            <div class="container mission-grid">
+        <section class="about-purpose">
 
-                <article class="mission-card">
-                    <span>01</span>
-                    <h2>Our Mission</h2>
+            <div class="container purpose-inner">
+
+                <div>
+                    <p class="m4-kicker">Our mission</p>
+
+                    <h2>Style within reach.</h2>
+
                     <p>
-                        To provide affordable, stylish, and comfortable
-                        ready-to-wear clothing that empowers customers
-                        to express themselves with confidence.
+                        Make comfortable, stylish ready-to-wear
+                        fashion accessible to every customer.
                     </p>
-                </article>
+                </div>
 
-                <article class="mission-card">
-                    <span>02</span>
-                    <h2>Our Vision</h2>
+                <div>
+                    <p class="m4-kicker">Our vision</p>
+
+                    <h2>Confidence, every day.</h2>
+
                     <p>
-                        To become a trusted fashion destination known
-                        for quality, accessibility, and excellent
-                        customer experience.
+                        Become a trusted destination for everyday
+                        fashion, quality and thoughtful customer care.
                     </p>
-                </article>
+                </div>
 
             </div>
-        </section>
 
-        <section class="values-section container">
-            <p class="about-label">WHAT WE BELIEVE IN</p>
-            <h2>Our Core Values</h2>
-
-            <div class="values-grid">
-
-                <article class="value-card">
-                    <span>01</span>
-                    <h3>Quality</h3>
-                    <p>Clothing that combines comfort, style, and everyday functionality.</p>
-                </article>
-
-                <article class="value-card">
-                    <span>02</span>
-                    <h3>Affordability</h3>
-                    <p>Accessible fashion without compromising personal style.</p>
-                </article>
-
-                <article class="value-card">
-                    <span>03</span>
-                    <h3>Confidence</h3>
-                    <p>Helping every customer feel comfortable expressing themselves.</p>
-                </article>
-
-                <article class="value-card">
-                    <span>04</span>
-                    <h3>Customer Care</h3>
-                    <p>Creating a welcoming and enjoyable shopping experience.</p>
-                </article>
-
-            </div>
-        </section>
-
-        <section class="about-cta">
-            <h2>Discover Your Personal Style</h2>
-            <p>Find your next favorite outfit at CCMC RTW Shop.</p>
-            <a href="shop.html" class="btn">Shop Now</a>
         </section>
 
     </main>
 
-    <footer class="footer">
-        <div class="container footer-grid">
-            <div>
-                <a href="index.html" class="logo">CCMC <span>RTW</span></a>
-                <p>Your everyday fashion destination.</p>
+    <footer class="m4-footer">
+
+        <div class="container">
+
+            <p>&copy; 2026 CCMC RTW Shop</p>
+
+            <div class="m4-links">
+                <a href="shop.html">Collection</a>
+                <a href="contact.html">Customer care</a>
+                <a href="account.html">My account</a>
             </div>
 
-            <div>
-                <h3>Quick Links</h3>
-                <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="about.html">About Us</a>
-                <a href="contact.html">Contact</a>
-            </div>
-
-            <div>
-                <h3>Customer Support</h3>
-                <a href="account.html">My Account</a>
-                <a href="cart.html">Shopping Cart</a>
-                <a href="contact.html">Contact Us</a>
-            </div>
         </div>
 
-        <div class="footer-bottom">
-            <p>&copy; 2026 CCMC RTW Shop. All rights reserved.</p>
-        </div>
     </footer>
 
     <script src="js/app.js"></script>
+
 </body>
 </html>

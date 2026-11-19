@@ -1,13 +1,17 @@
-
 document.addEventListener("DOMContentLoaded", function () {
-    const contactForm = document.getElementById("member4-contact-form");
+    const form = document.getElementById("member4-contact-form");
     const feedback = document.getElementById("contact-feedback");
 
-    if (!contactForm || !feedback) {
+    if (!form || !feedback) {
         return;
     }
 
-    contactForm.addEventListener("submit", function (event) {
+    function showFeedback(message, type) {
+        feedback.textContent = message;
+        feedback.className = type;
+    }
+
+    form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         const name = document.getElementById("contact-name").value.trim();
@@ -16,22 +20,35 @@ document.addEventListener("DOMContentLoaded", function () {
         const message = document.getElementById("contact-message").value.trim();
 
         if (!name || !email || !subject || !message) {
-            feedback.textContent = "Please complete all required fields.";
-            feedback.className = "error";
+            showFeedback("Please complete all fields.", "error");
+            return;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+            showFeedback("Please enter a valid email address.", "error");
             return;
         }
 
         if (message.length < 10) {
-            feedback.textContent = "Your message must contain at least 10 characters.";
-            feedback.className = "error";
+            showFeedback(
+                "Your message must contain at least 10 characters.",
+                "error"
+            );
             return;
         }
 
-        feedback.textContent =
-            "Thank you, " + name + "! Your form has been successfully validated. This is a demo; no message was sent.";
+        showFeedback(
+            `Thank you, ${name}! Your form has been completed successfully. This is a demo; no message was sent.`,
+            "success"
+        );
 
-        feedback.className = "success";
+        form.reset();
+    });
 
-        contactForm.reset();
+    form.addEventListener("input", function () {
+        feedback.textContent = "";
+        feedback.className = "";
     });
 });
