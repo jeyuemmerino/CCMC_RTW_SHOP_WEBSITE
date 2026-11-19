@@ -1,0 +1,250 @@
+
+.account-page {
+    background: #faf7f2;
+    color: #3c3028;
+}
+
+.account-section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.account-wrapper {
+    max-width: 1050px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e9ded2;
+    box-shadow: 0 10px 40px rgba(60, 48, 40, 0.08);
+}
+
+.account-image {
+    min-height: 630px;
+    display: flex;
+    align-items: flex-end;
+    background:
+        linear-gradient(rgba(40, 30, 25, 0.1), rgba(40, 30, 25, 0.65)),
+        url("https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85");
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.account-image-content {
+    padding: 40px;
+}
+
+.account-image-content p {
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.account-image-content h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(35px, 5vw, 50px);
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.account-image-content span {
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.account-content {
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.account-brand {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.account-tabs {
+    display: flex;
+    background: #f1e9e0;
+    border-radius: 6px;
+    padding: 5px;
+    margin-bottom: 30px;
+}
+
+.account-tab {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    background: transparent;
+    color: #74675e;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.account-tab.active {
+    background: #3c3028;
+    color: white;
+}
+
+.account-form[hidden] {
+    display: none !important;
+}
+
+.account-form h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 34px;
+    margin-bottom: 8px;
+}
+
+.account-description {
+    color: #74675e;
+    margin-bottom: 25px;
+}
+
+.account-form-group {
+    margin-bottom: 18px;
+}
+
+.account-form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.account-form-group input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d9cbbd;
+    border-radius: 5px;
+    background: #faf7f2;
+    color: #3c3028;
+    font: inherit;
+    outline: none;
+}
+
+.account-form-group input:focus {
+    border-color: #9a7658;
+    box-shadow: 0 0 0 2px rgba(154, 118, 88, 0.15);
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 70px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #9a7658;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.account-submit {
+    width: 100%;
+    padding: 15px;
+    background: #3c3028;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.account-submit:hover {
+    background: #9a7658;
+}
+
+.switch-account {
+    text-align: center;
+    font-size: 13px;
+    color: #74675e;
+    margin-top: 22px;
+}
+
+.switch-account button {
+    border: none;
+    background: none;
+    color: #9a7658;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#account-feedback {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+#account-feedback.success {
+    padding: 12px;
+    border-radius: 5px;
+    background: #edf7ef;
+    color: #387447;
+}
+
+#account-feedback.error {
+    padding: 12px;
+    border-radius: 5px;
+    background: #fff1f1;
+    color: #b33a3a;
+}
+
+.account-demo-note {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #8b8179;
+}
+
+@media (max-width: 850px) {
+    .account-content {
+        padding: 30px;
+    }
+
+    .account-image-content {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 650px) {
+    .account-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .account-image {
+        min-height: 250px;
+    }
+
+    .account-section {
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+
+    .account-content {
+        padding: 25px;
+    }
+}
