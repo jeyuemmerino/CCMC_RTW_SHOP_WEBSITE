@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FCF9F5">
+  <meta name="description" content="Browse the CCMC RTW Shop product catalog.">
+  <title>Shop the Collection | CCMC RTW Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shop.css">
+  <script src="shop.js" defer></script>
+</head>
+<body class="catalog-page">
+  <main class="catalog-shell" id="catalog-main">
+    <header class="catalog-heading">
+      <div class="catalog-brand">
+        <span class="catalog-brand-mark" aria-hidden="true">C</span>
+        <span>CCMC <strong>RTW</strong><small>SHOP · IMUS, CAVITE</small></span>
+      </div>
+      <div class="catalog-intro">
+        <p class="catalog-eyebrow">Everyday style, made easy</p>
+        <h1>Shop the collection</h1>
+        <p class="catalog-description">Find comfortable favorites for every day and every plan.</p>
+      </div>
+    </header>
+
+    <section class="catalog-controls" aria-label="Find products">
+      <div class="catalog-search-wrap">
+        <label class="catalog-visually-hidden" for="catalog-search">Search products by name</label>
+        <svg class="catalog-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="10.8" cy="10.8" r="6.8"></circle>
+          <path d="m16 16 4.5 4.5"></path>
+        </svg>
+        <input id="catalog-search" type="search" placeholder="Search products..." autocomplete="off">
+        <button class="catalog-clear-search" type="button" aria-label="Clear search" hidden>Clear</button>
+      </div>
+      <div class="catalog-filters" role="group" aria-label="Filter products by category">
+        <button class="catalog-filter is-active" type="button" data-category="all" aria-pressed="true">All items</button>
+        <button class="catalog-filter" type="button" data-category="tops" aria-pressed="false">Tops</button>
+        <button class="catalog-filter" type="button" data-category="bottoms" aria-pressed="false">Bottoms</button>
+        <button class="catalog-filter" type="button" data-category="dresses" aria-pressed="false">Dresses</button>
+      </div>
+    </section>
+
+    <section class="catalog-results" aria-labelledby="catalog-results-title">
+      <div class="catalog-results-heading">
+        <h2 id="catalog-results-title">Our collection</h2>
+        <p class="catalog-results-count" aria-live="polite"></p>
+      </div>
+      <div class="catalog-product-grid">
+        <article class="catalog-product-card" data-category="tops" data-name="Dri-Fit Sports Shirt">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/dri-fit-shirt.jpg" alt="Dri-Fit Sports Shirt" width="1000" height="1500" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Dri-Fit Sports Shirt" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Tops</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Dri-Fit Sports Shirt</h3>
+            <p class="catalog-product-category">Tops</p>
+            <p class="catalog-product-price">₱350</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="tops" data-name="Men's Polo Shirt">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/polo-shirt.jpg" alt="Men's Polo Shirt" width="1000" height="1509" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Men's Polo Shirt" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Tops</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Men's Polo Shirt</h3>
+            <p class="catalog-product-category">Tops</p>
+            <p class="catalog-product-price">₱450</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="tops" data-name="Round Neck T-Shirt">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/round-neck-shirt.jpg" alt="Round Neck T-Shirt" width="1000" height="667" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Round Neck T-Shirt" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Tops</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Round Neck T-Shirt</h3>
+            <p class="catalog-product-category">Tops</p>
+            <p class="catalog-product-price">₱299</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="tops" data-name="Oversized T-Shirt">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/oversized-shirt.jpg" alt="Oversized T-Shirt" width="1000" height="1500" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Oversized T-Shirt" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Tops</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Oversized T-Shirt</h3>
+            <p class="catalog-product-category">Tops</p>
+            <p class="catalog-product-price">₱399</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="bottoms" data-name="Jogger Pants">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/jogger-pants.jpg" alt="Jogger Pants" width="1000" height="1500" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Jogger Pants" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Bottoms</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Jogger Pants</h3>
+            <p class="catalog-product-category">Bottoms</p>
+            <p class="catalog-product-price">₱550</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="bottoms" data-name="Denim Shorts">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/denim-shorts.jpg" alt="Denim Shorts" width="1000" height="1250" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Denim Shorts" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Bottoms</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Denim Shorts</h3>
+            <p class="catalog-product-category">Bottoms</p>
+            <p class="catalog-product-price">₱400</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="bottoms" data-name="Track Pants">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/track-pants.jpg" alt="Track Pants" width="1000" height="1500" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Track Pants" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Bottoms</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Track Pants</h3>
+            <p class="catalog-product-category">Bottoms</p>
+            <p class="catalog-product-price">₱650</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="bottoms" data-name="Cargo Pants">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/cargo-pants.jpg" alt="Cargo Pants" width="1000" height="1500" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Cargo Pants" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Bottoms</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Cargo Pants</h3>
+            <p class="catalog-product-category">Bottoms</p>
+            <p class="catalog-product-price">₱750</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="dresses" data-name="Casual Summer Dress">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/casual-summer-dress.jpg" alt="Casual Summer Dress" width="1000" height="1400" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Casual Summer Dress" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Dresses</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Casual Summer Dress</h3>
+            <p class="catalog-product-category">Dresses</p>
+            <p class="catalog-product-price">₱650</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="dresses" data-name="Floral Dress">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/floral-dress.jpg" alt="Floral Dress" width="1000" height="1333" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Floral Dress" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Dresses</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Floral Dress</h3>
+            <p class="catalog-product-category">Dresses</p>
+            <p class="catalog-product-price">₱750</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="dresses" data-name="Mini Dress">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/mini-dress.jpg" alt="Mini Dress" width="1000" height="1503" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Mini Dress" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Dresses</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Mini Dress</h3>
+            <p class="catalog-product-category">Dresses</p>
+            <p class="catalog-product-price">₱699</p>
+          </div>
+        </article>
+
+        <article class="catalog-product-card" data-category="dresses" data-name="Maxi Dress">
+          <div class="catalog-product-image">
+            <img data-catalog-image src="images/maxi-dress.jpg" alt="Maxi Dress" width="1000" height="1575" loading="lazy" decoding="async">
+            <div class="catalog-image-fallback" role="img" aria-label="Product photo unavailable for Maxi Dress" hidden>
+              <span>Product photo unavailable</span>
+            </div>
+            <span class="catalog-product-tag">Dresses</span>
+          </div>
+          <div class="catalog-product-info">
+            <h3>Maxi Dress</h3>
+            <p class="catalog-product-category">Dresses</p>
+            <p class="catalog-product-price">₱899</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="catalog-empty-state" role="status" hidden>
+        <h3>No matching products</h3>
+        <p>Try a different product name or choose another category.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
