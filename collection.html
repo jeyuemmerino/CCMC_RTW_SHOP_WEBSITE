@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#FCF9F5">
-    <meta name="description" content="Discover affordable men's sportswear and everyday essentials at CCMC RTW Shop in Imus, Cavite.">
+    <meta name="description" content="Shop everyday essentials, sportswear, and ready-to-wear styles from CCMC RTW Shop.">
 
-    <title>CCMC RTW — Everyday Essentials</title>
+    <title>Collection | CCMC RTW Shop</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,13 +14,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
-
     <script src="script.js" defer></script>
 </head>
 
 <body>
 
-    <div class="topline">
+<div class="topline">
         <p>Everyday essentials · Proudly from Imus, Cavite</p>
     </div>
 
@@ -39,26 +38,27 @@
 
             </button>
 
-            <a class="brand" href="#home" aria-label="CCMC RTW Shop home">
+            <a class="brand" href="home.html" aria-label="CCMC RTW Shop home">
 
                 <span class="brand-name">
-                    CCMC <strong>RTW.</strong>
+                    CCMC <strong>RTW</strong>
                     <small>EVERYDAY ESSENTIALS</small>
                 </span>
 
             </a>
 
             <nav class="desktop-nav" aria-label="Main navigation">
-                <a href="#home">Home</a>
-                <a href="#shop">Collection</a>
-                <a href="#categories">Categories</a>
+                <a href="home.html">Home</a>
+                <a href="collection.html">Collection</a>
+                <a href="categories.html">Categories</a>
                 <a href="about.html">About</a>
                 <a href="contact.html">Contact</a>
+                <a href="account.html">My Account</a>
             </nav>
 
             <div class="header-actions">
 
-                <form class="search-form" role="search">
+                <form class="search-form" role="search" action="collection.html" method="get">
 
                     <label class="sr-only" for="product-search">
                         Search products
@@ -76,7 +76,7 @@
                     </button>
 
                     <input
-                        id="product-search"
+                        id="product-search" name="q"
                         type="search"
                         placeholder="Find your favorites"
                         autocomplete="off"
@@ -84,16 +84,14 @@
 
                 </form>
 
-                <button class="icon-button account-button"
-                    type="button"
-                    aria-label="Your account">
+                <a class="icon-button account-button" href="account.html" aria-label="Your account">
 
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <circle cx="12" cy="8" r="3.5"/>
                         <path d="M5 20a7 7 0 0 1 14 0"/>
                     </svg>
 
-                </button>
+                </a>
 
                 <button class="icon-button cart-button"
                     type="button"
@@ -113,9 +111,9 @@
         </div>
 
         <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
-            <a href="#home">Home</a>
-            <a href="#shop">Collection</a>
-            <a href="#categories">Categories</a>
+            <a href="home.html">Home</a>
+            <a href="collection.html">Collection</a>
+            <a href="categories.html">Categories</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
             <a href="account.html">My Account</a>
@@ -123,261 +121,9 @@
 
     </header>
 
-    <main>
+<main>
 
-        <section class="hero" id="home" aria-label="Featured collections">
-
-            <article class="hero-slide is-active"
-                style="--hero-image: url('https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=1600&q=85')"
-                aria-hidden="false">
-
-                <div class="hero-overlay"></div>
-
-                <div class="hero-content">
-
-                    <p class="eyebrow">The everyday edit</p>
-
-                    <h1>
-                        Made to move.<br>
-                        <span>Styled to last.</span>
-                    </h1>
-
-                    <p class="hero-description">
-                        Thoughtfully chosen menswear for wherever
-                        life takes you. Effortless style, everyday comfort.
-                    </p>
-
-                    <a class="button button-white" href="#shop">
-                        Explore collection
-                        <span aria-hidden="true">↗</span>
-                    </a>
-
-                </div>
-
-                <p class="hero-note">THE EVERYDAY COLLECTION — 01</p>
-
-            </article>
-
-            <article class="hero-slide"
-                style="--hero-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=85')"
-                aria-hidden="true">
-
-                <div class="hero-overlay"></div>
-
-                <div class="hero-content">
-
-                    <p class="eyebrow">The active edit</p>
-
-                    <h2>
-                        Move freely.<br>
-                        <span>Live comfortably.</span>
-                    </h2>
-
-                    <p class="hero-description">
-                        Performance-ready essentials designed
-                        for your active everyday lifestyle.
-                    </p>
-
-                    <a class="button button-white" href="#categories">
-                        Discover sportswear
-                        <span aria-hidden="true">↗</span>
-                    </a>
-
-                </div>
-
-                <p class="hero-note">THE ACTIVE COLLECTION — 02</p>
-
-            </article>
-
-            <article class="hero-slide"
-                style="--hero-image: url('https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=1600&q=85')"
-                aria-hidden="true">
-
-                <div class="hero-overlay"></div>
-
-                <div class="hero-content">
-
-                    <p class="eyebrow">The weekend edit</p>
-
-                    <h2>
-                        Less effort.<br>
-                        <span>More style.</span>
-                    </h2>
-
-                    <p class="hero-description">
-                        Relaxed silhouettes and timeless essentials
-                        for your off-duty moments.
-                    </p>
-
-                    <a class="button button-white" href="#shop">
-                        Find your style
-                        <span aria-hidden="true">↗</span>
-                    </a>
-
-                </div>
-
-                <p class="hero-note">THE WEEKEND COLLECTION — 03</p>
-
-            </article>
-
-            <button class="slider-arrow slider-prev"
-                type="button"
-                aria-label="Previous collection">
-                <span aria-hidden="true">←</span>
-            </button>
-
-            <button class="slider-arrow slider-next"
-                type="button"
-                aria-label="Next collection">
-                <span aria-hidden="true">→</span>
-            </button>
-
-            <div class="slider-dots" role="group" aria-label="Choose a collection">
-
-                <button class="slider-dot is-active"
-                    type="button"
-                    aria-label="Show collection 1"
-                    aria-current="true">
-                </button>
-
-                <button class="slider-dot"
-                    type="button"
-                    aria-label="Show collection 2">
-                </button>
-
-                <button class="slider-dot"
-                    type="button"
-                    aria-label="Show collection 3">
-                </button>
-
-            </div>
-
-        </section>
-
-        <section class="quick-points" aria-label="Why shop CCMC">
-
-            <div>
-                <p><strong>Thoughtful essentials</strong></p>
-            </div>
-
-            <div>
-                <p><strong>Comfort in every fit</strong></p>
-            </div>
-
-            <div>
-                <p><strong>Everyday affordability</strong></p>
-            </div>
-
-        </section>
-
-        <section class="section categories-section" id="categories">
-
-            <div class="section-heading">
-
-                <div>
-                    <p class="eyebrow eyebrow-blue">The collection</p>
-                    <h2>Find your everyday fit.</h2>
-                </div>
-
-                <a class="text-link" href="#shop">
-                    View all styles
-                    <span aria-hidden="true">↗</span>
-                </a>
-
-            </div>
-
-            <div class="category-grid">
-
-                <a class="category-card"
-                    href="#shop"
-                    data-category-link="T-Shirts">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=85"
-                        alt="Classic everyday T-shirt"
-                        loading="lazy"
-                    >
-
-                    <span class="category-label">
-                        <span>T-Shirts</span>
-                        <span class="category-arrow" aria-hidden="true">↗</span>
-                    </span>
-
-                </a>
-
-                <a class="category-card"
-                    href="#shop"
-                    data-category-link="Sportswear">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=85"
-                        alt="Active sportswear"
-                        loading="lazy"
-                    >
-
-                    <span class="category-label">
-                        <span>Sportswear</span>
-                        <span class="category-arrow" aria-hidden="true">↗</span>
-                    </span>
-
-                </a>
-
-                <a class="category-card"
-                    href="#shop"
-                    data-category-link="Shorts">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=800&q=85"
-                        alt="Casual everyday shorts"
-                        loading="lazy"
-                    >
-
-                    <span class="category-label">
-                        <span>Shorts</span>
-                        <span class="category-arrow" aria-hidden="true">↗</span>
-                    </span>
-
-                </a>
-
-                <a class="category-card"
-                    href="#shop"
-                    data-category-link="Jogging Pants">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=800&q=85"
-                        alt="Comfortable jogging pants"
-                        loading="lazy"
-                    >
-
-                    <span class="category-label">
-                        <span>Jogging Pants</span>
-                        <span class="category-arrow" aria-hidden="true">↗</span>
-                    </span>
-
-                </a>
-
-                <a class="category-card"
-                    href="#shop"
-                    data-category-link="Jackets">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=85"
-                        alt="Classic layering jacket"
-                        loading="lazy"
-                    >
-
-                    <span class="category-label">
-                        <span>Jackets</span>
-                        <span class="category-arrow" aria-hidden="true">↗</span>
-                    </span>
-
-                </a>
-
-            </div>
-
-        </section>
-
-        <section class="featured-section" id="shop">
+<section class="featured-section" id="collection">
 
             <div class="section">
 
@@ -667,76 +413,18 @@
 
         </section>
 
-        <section class="about-section" id="about">
+</main>
 
-            <div class="about-photo">
-
-                <img
-                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1300&q=85"
-                    alt="Thoughtfully arranged clothing collection"
-                    loading="lazy"
-                >
-
-            </div>
-
-            <div class="about-copy">
-
-                <p class="eyebrow eyebrow-blue">The story behind CCMC</p>
-
-                <h2>
-                    Everyday pieces.<br>
-                    Lasting style.
-                </h2>
-
-                <p>
-                    Based in Imus, Cavite, CCMC RTW Shop brings
-                    together affordable menswear and sportswear
-                    designed for comfort, confidence, and everyday living.
-                </p>
-
-                <a class="button button-blue" href="about.html">
-                    Discover our story
-                    <span aria-hidden="true">↗</span>
-                </a>
-
-            </div>
-
-        </section>
-
-        <section class="contact-band" id="contact">
-
-            <div>
-
-                <p class="eyebrow">Customer care</p>
-
-                <h2>We're here for you.</h2>
-
-                <p>
-                    Have a question about your order or our collection?
-                    We'd love to hear from you.
-                </p>
-
-            </div>
-
-            <a class="button button-white" href="contact.html">
-                Get in touch
-                <span aria-hidden="true">↗</span>
-            </a>
-
-        </section>
-
-    </main>
-
-    <footer class="site-footer">
+<footer class="site-footer">
 
         <div class="footer-main">
 
             <div class="footer-brand">
 
-                <a class="brand" href="#home" aria-label="CCMC RTW Shop home">
+                <a class="brand" href="home.html" aria-label="CCMC RTW Shop home">
 
                     <span class="brand-name">
-                        CCMC <strong>RTW.</strong>
+                        CCMC <strong>RTW</strong>
                         <small>EVERYDAY ESSENTIALS</small>
                     </span>
 
@@ -754,10 +442,10 @@
 
                 <h3>Explore</h3>
 
-                <a href="#home">Home</a>
-                <a href="#shop">Collection</a>
-                <a href="#categories">Categories</a>
-                <a href="about.html">Our Story</a>
+                <a href="home.html">Home</a>
+                <a href="collection.html">Collection</a>
+                <a href="categories.html">Categories</a>
+                <a href="about.html">About</a>
 
             </div>
 
@@ -765,7 +453,7 @@
 
                 <h3>Customer Care</h3>
 
-                <a href="contact.html">Contact Us</a>
+                <a href="contact.html">Contact</a>
                 <a href="account.html">My Account</a>
 
             </div>
@@ -786,8 +474,10 @@
                     Instagram ↗
                 </a>
 
-                <a href="mailto:ccmcrtwshop@gmail.com">
-                    Email
+                <a href="https://www.gmail.com/"
+                    target="_blank"
+                    rel="noreferrer">
+                    Email ↗
                 </a>
 
             </div>
@@ -805,7 +495,9 @@
 
     </footer>
 
-    <div class="pd-modal" hidden>
+<div class="toast" role="status" aria-live="polite"></div>
+
+<div class="pd-modal" hidden>
 
         <div class="pd-backdrop"></div>
 

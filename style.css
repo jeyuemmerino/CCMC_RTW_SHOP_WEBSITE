@@ -1869,15 +1869,18 @@ p {
 
     .pd-dialog {
         max-height: calc(100vh - 30px);
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
     }
 
     .pd-media {
+        flex: 0 0 auto;
         min-height: 0;
         aspect-ratio: 4 / 3;
     }
 
     .pd-info {
+        flex: 0 0 auto;
         padding: 25px;
         gap: 17px;
     }
