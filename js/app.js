@@ -2,9 +2,14 @@ const session = requireAuth();
 let state = loadState();
 let html5QrScanner = null;
 let isCameraScanning = false;
+let posQrScanner = null;
+let posCameraActive = false;
+let posCart = [];
+let sessionReceipts = [];
 
 const pageTitles = {
   dashboard: "Dashboard",
+  checkout: "POS Checkout",
   products: "Products",
   sales: "Sales Processing",
   inventory: "Inventory & Expenses",
@@ -41,6 +46,9 @@ function switchTab(tabName) {
   if (tabName !== "sales" && isCameraScanning) {
     stopCameraScanner();
   }
+  if (tabName !== "checkout" && posCameraActive) {
+    stopPosCamera();
+  }
 
   document.querySelectorAll(".nav-btn").forEach((b) => {
     b.classList.toggle("active", b.dataset.tab === tabName);
@@ -53,12 +61,15 @@ function switchTab(tabName) {
 
   if (tabName === "sales") {
     document.getElementById("sale-sku-scan")?.focus();
+  } else if (tabName === "checkout") {
+    document.getElementById("pos-sku-input")?.focus();
   }
 }
 
 function renderAll() {
   state = loadState();
   renderDashboard();
+  renderCheckoutModule();
   renderProducts();
   populateSalesAndInventoryDropdowns();
   renderSalesLedger();
@@ -68,6 +79,375 @@ function renderAll() {
   renderUsersAndAudit();
   renderSettings();
 }
+
+// === POS CHECKOUT MODULE ===
+function setCheckoutBanner(msg, type = "info") {
+  const el = document.getElementById("checkout-banner");
+  if (!el) return;
+  el.classList.remove("hidden", "alert-info", "alert-error");
+  el.classList.add(type === "error" ? "alert-error" : "alert-info");
+  el.textContent = msg;
+}
+
+function findCatalogItem(rawSku) {
+  const code = String(rawSku || "").trim().toUpperCase();
+  return state.products.find((p) => p.sku.toUpperCase() === code) || null;
+}
+
+function addPosItemToCart(sku, qtyToAdd = 1) {
+  const prod = findCatalogItem(sku);
+  const scanMsg = document.getElementById("pos-scan-feedback");
+  const qty = Math.max(1, parseInt(qtyToAdd, 10) || 1);
+
+  if (!prod) {
+    if (scanMsg) scanMsg.textContent = `SKU "${String(sku || "").trim().toUpperCase()}" not found.`;
+    setCheckoutBanner("Product SKU not found in catalog.", "error");
+    return false;
+  }
+
+  if (prod.stock <= 0) {
+    if (scanMsg) scanMsg.textContent = `${prod.name} is out of stock.`;
+    setCheckoutBanner(`${prod.name} is out of stock.`, "error");
+    return false;
+  }
+
+  const existing = posCart.find((i) => i.sku === prod.sku);
+  const inCart = existing ? existing.qty : 0;
+
+  if (inCart + qty > prod.stock) {
+    setCheckoutBanner(`Only ${prod.stock} in stock for ${prod.name} (${inCart} already in cart).`, "error");
+    return false;
+  }
+
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    posCart.push({
+      sku: prod.sku,
+      name: prod.name,
+      sizeVariant: prod.sizeVariant,
+      unitPrice: prod.sellingPrice,
+      unitCost: prod.unitCost,
+      qty
+    });
+  }
+
+  if (scanMsg) scanMsg.textContent = `Added ${qty}x ${prod.name} (${prod.sku})`;
+  renderCheckoutModule();
+  return true;
+}
+
+function adjustPosQty(sku, delta) {
+  const idx = posCart.findIndex((i) => i.sku === sku);
+  if (idx === -1) return;
+
+  const item = posCart[idx];
+  const prod = findCatalogItem(sku);
+  const nextQty = item.qty + delta;
+
+  if (nextQty <= 0) {
+    posCart.splice(idx, 1);
+  } else if (prod && nextQty > prod.stock) {
+    setCheckoutBanner(`Cannot exceed stock (${prod.stock}) for ${item.name}.`, "error");
+    return;
+  } else {
+    item.qty = nextQty;
+  }
+
+  renderCheckoutModule();
+}
+
+function removePosItem(sku) {
+  posCart = posCart.filter((i) => i.sku !== sku);
+  renderCheckoutModule();
+}
+
+function renderPosDropdownsAndStock() {
+  const custSelect = document.getElementById("pos-customer-select");
+  const prodSelect = document.getElementById("pos-product-select");
+  const stockTbody = document.getElementById("pos-stock-tbody");
+  const tagsBox = document.getElementById("pos-quick-tags");
+
+  if (custSelect) {
+    const prevCust = custSelect.value;
+    custSelect.innerHTML = state.customers
+      .map((c) => `<option value="${c.id}">${c.name}</option>`)
+      .join("");
+    if (prevCust && state.customers.some((c) => c.id === prevCust)) {
+      custSelect.value = prevCust;
+    }
+  }
+
+  if (prodSelect) {
+    const prevProd = prodSelect.value;
+    prodSelect.innerHTML = state.products.length
+      ? state.products
+          .map(
+            (p) =>
+              `<option value="${p.sku}" ${p.stock <= 0 ? "disabled" : ""}>${p.sku} — ${p.name} (${p.sizeVariant}) [${p.stock} left | ${formatPeso(p.sellingPrice)}]</option>`
+          )
+          .join("")
+      : `<option value="">No products in catalog</option>`;
+    if (prevProd && state.products.some((p) => p.sku === prevProd)) {
+      prodSelect.value = prevProd;
+    }
+  }
+
+  if (stockTbody) {
+    stockTbody.innerHTML = state.products.length
+      ? state.products
+          .map(
+            (p) => `
+            <tr>
+              <td><strong>${p.sku}</strong></td>
+              <td>${p.name} <small>(${p.sizeVariant})</small></td>
+              <td>${formatPeso(p.sellingPrice)}</td>
+              <td>${p.stock}</td>
+            </tr>`
+          )
+          .join("")
+      : `<tr><td colspan="4" class="kpi-sub">No products registered yet. Add items in Products first.</td></tr>`;
+  }
+
+  if (tagsBox) {
+    tagsBox.innerHTML = state.products.length
+      ? state.products
+          .map(
+            (p) => `
+            <button type="button" class="tag-chip-btn" data-pos-tag="${p.sku}" ${p.stock <= 0 ? "disabled" : ""}>
+              <div><strong>${p.sku}</strong></div>
+              <div class="kpi-sub">${p.name} · ${formatPeso(p.sellingPrice)} (${p.stock})</div>
+            </button>`
+          )
+          .join("")
+      : `<p class="kpi-sub">Add products in the Products tab to generate quick-scan tags.</p>`;
+
+    tagsBox.querySelectorAll("[data-pos-tag]").forEach((btn) => {
+      btn.addEventListener("click", () => addPosItemToCart(btn.getAttribute("data-pos-tag"), 1));
+    });
+  }
+}
+
+function renderPosCartAndTotals() {
+  const tbody = document.getElementById("pos-cart-tbody");
+  const discInput = document.getElementById("pos-discount-input");
+  const completeBtn = document.getElementById("pos-complete-btn");
+
+  const subtotal = posCart.reduce((sum, i) => sum + i.unitPrice * i.qty, 0);
+  const rawDisc = Math.max(0, Number(discInput?.value) || 0);
+  const discount = Math.min(rawDisc, subtotal);
+  const totalDue = Math.max(0, subtotal - discount);
+
+  if (tbody) {
+    tbody.innerHTML = posCart.length
+      ? posCart
+          .map(
+            (i) => `
+            <tr>
+              <td><strong>${i.name}</strong><br><small>${i.sku} · ${i.sizeVariant}</small></td>
+              <td>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="adjustPosQty('${i.sku}', -1)">−</button>
+                <strong style="margin: 0 0.35rem;">${i.qty}</strong>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="adjustPosQty('${i.sku}', 1)">+</button>
+              </td>
+              <td>${formatPeso(i.unitPrice * i.qty)}</td>
+              <td><button type="button" class="btn btn-secondary btn-sm" onclick="removePosItem('${i.sku}')">✕</button></td>
+            </tr>`
+          )
+          .join("")
+      : `<tr><td colspan="4" class="kpi-sub">Cart is empty.</td></tr>`;
+  }
+
+  document.getElementById("pos-subtotal").textContent = formatPeso(subtotal);
+  document.getElementById("pos-discount-display").textContent = `-${formatPeso(discount)}`;
+  document.getElementById("pos-grand-total").textContent = formatPeso(totalDue);
+  if (completeBtn) completeBtn.disabled = posCart.length === 0;
+}
+
+function renderSessionReceipts() {
+  const logEl = document.getElementById("pos-receipts-log");
+  const countEl = document.getElementById("pos-receipt-count");
+  if (countEl) countEl.textContent = `${sessionReceipts.length} receipt(s)`;
+  if (!logEl) return;
+
+  if (!sessionReceipts.length) {
+    logEl.innerHTML = `<p class="kpi-sub">No checkouts completed yet in this session.</p>`;
+    return;
+  }
+
+  logEl.innerHTML = sessionReceipts
+    .slice()
+    .reverse()
+    .map(
+      (r) => `
+      <div class="receipt-card">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+          <strong>${r.receiptId}</strong>
+          <span class="kpi-sub">${r.time}</span>
+        </div>
+        <div class="kpi-sub" style="margin-bottom: 0.5rem;">Customer: ${r.customerName}</div>
+        ${r.items.map((i) => `<div style="font-size: 0.85rem;">${i.qty}× ${i.name} — ${formatPeso(i.qty * i.unitPrice)}</div>`).join("")}
+        <div style="margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid #eee4dd; font-weight: 600;">
+          Paid: ${formatPeso(r.totalDue)}
+        </div>
+      </div>`
+    )
+    .join("");
+}
+
+function renderCheckoutModule() {
+  renderPosDropdownsAndStock();
+  renderPosCartAndTotals();
+  renderSessionReceipts();
+}
+
+document.getElementById("pos-sku-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (addPosItemToCart(e.target.value, 1)) e.target.value = "";
+  }
+});
+
+document.getElementById("pos-sku-add-btn").addEventListener("click", () => {
+  const input = document.getElementById("pos-sku-input");
+  if (addPosItemToCart(input.value, 1)) {
+    input.value = "";
+    input.focus();
+  }
+});
+
+document.getElementById("pos-manual-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const sku = document.getElementById("pos-product-select").value;
+  const qty = parseInt(document.getElementById("pos-qty-input").value, 10) || 1;
+  if (addPosItemToCart(sku, qty)) {
+    document.getElementById("pos-qty-input").value = "1";
+  }
+});
+
+document.getElementById("pos-discount-input").addEventListener("input", renderPosCartAndTotals);
+
+document.getElementById("pos-clear-cart-btn").addEventListener("click", () => {
+  posCart = [];
+  document.getElementById("pos-discount-input").value = "0";
+  renderCheckoutModule();
+  setCheckoutBanner("Cart cleared.", "info");
+});
+
+document.getElementById("pos-complete-btn").addEventListener("click", () => {
+  if (!posCart.length) return;
+
+  for (const item of posCart) {
+    const prod = findCatalogItem(item.sku);
+    if (!prod || item.qty > prod.stock) {
+      setCheckoutBanner(`Insufficient stock for ${item.name}.`, "error");
+      return;
+    }
+  }
+
+  const custId = document.getElementById("pos-customer-select").value;
+  const cust = state.customers.find((c) => c.id === custId) || state.customers[0];
+  const subtotal = posCart.reduce((sum, i) => sum + i.unitPrice * i.qty, 0);
+  const rawDisc = Math.max(0, Number(document.getElementById("pos-discount-input").value) || 0);
+  const discount = Math.min(rawDisc, subtotal);
+  const totalDue = Math.max(0, subtotal - discount);
+  const today = new Date().toISOString().slice(0, 10);
+  const receiptId = "CHK-" + (1001 + state.sales.length);
+
+  posCart.forEach((item) => {
+    const prod = findCatalogItem(item.sku);
+    prod.stock -= item.qty;
+    const lineDisc = subtotal > 0 ? Number((((item.unitPrice * item.qty) / subtotal) * discount).toFixed(2)) : 0;
+    const saleId = "SL-" + (1001 + state.sales.length);
+
+    state.sales.push({
+      id: saleId,
+      date: today,
+      customerId: cust ? cust.id : "walk-in",
+      customerName: cust ? cust.name : "Walk-in Customer",
+      sku: prod.sku,
+      productName: prod.name,
+      qty: item.qty,
+      unitPrice: prod.sellingPrice,
+      unitCostAtSale: prod.unitCost,
+      discount: lineDisc,
+      status: "Completed"
+    });
+  });
+
+  logAudit(
+    state,
+    session.username,
+    session.role,
+    `POS Checkout ${receiptId} (${cust ? cust.name : "Walk-in"}): ${posCart.map((i) => `${i.qty}x ${i.sku}`).join(", ")}`
+  );
+  saveState(state);
+
+  sessionReceipts.push({
+    receiptId,
+    time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    customerName: cust ? cust.name : "Walk-in Customer",
+    items: posCart.map((i) => ({ ...i })),
+    totalDue
+  });
+
+  posCart = [];
+  document.getElementById("pos-discount-input").value = "0";
+  renderAll();
+  setCheckoutBanner(`Checkout ${receiptId} completed — Total Due: ${formatPeso(totalDue)}. Stock and ledger updated.`, "info");
+});
+
+async function stopPosCamera() {
+  const readerEl = document.getElementById("pos-qr-reader");
+  const btnEl = document.getElementById("pos-camera-btn");
+  if (posQrScanner && posCameraActive) {
+    try {
+      await posQrScanner.stop();
+      await posQrScanner.clear();
+    } catch {}
+  }
+  posCameraActive = false;
+  if (readerEl) readerEl.classList.add("hidden");
+  if (btnEl) btnEl.textContent = "Scan Camera";
+}
+
+document.getElementById("pos-camera-btn").addEventListener("click", async () => {
+  const scanMsg = document.getElementById("pos-scan-feedback");
+  const readerEl = document.getElementById("pos-qr-reader");
+  const btnEl = document.getElementById("pos-camera-btn");
+
+  if (posCameraActive) {
+    await stopPosCamera();
+    return;
+  }
+
+  if (typeof Html5Qrcode === "undefined") {
+    scanMsg.textContent = "Camera library failed to load.";
+    return;
+  }
+
+  readerEl.classList.remove("hidden");
+  btnEl.textContent = "Stop Camera";
+  scanMsg.textContent = "Starting camera...";
+
+  try {
+    posQrScanner = new Html5Qrcode("pos-qr-reader");
+    await posQrScanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 220, height: 140 } },
+      async (decodedText) => {
+        addPosItemToCart(decodedText, 1);
+        await stopPosCamera();
+      },
+      () => {}
+    );
+    posCameraActive = true;
+    scanMsg.textContent = "Point camera at a QR code or barcode...";
+  } catch {
+    scanMsg.textContent = "Camera unavailable. Check permissions or scan/type SKU.";
+    await stopPosCamera();
+  }
+});
 
 function getDateFilterValues(periodId, startId, endId) {
   const period = document.getElementById(periodId)?.value || "all";

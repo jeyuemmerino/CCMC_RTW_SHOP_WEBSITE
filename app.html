@@ -9,6 +9,62 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <script src="https://unpkg.com/html5-qrcode" defer></script>
+  <style>
+    .cart-summary-box {
+      margin-top: 1rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--border, #e5d8cf);
+    }
+    .cart-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.92rem;
+    }
+    .cart-grand-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-top: 0.6rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--border, #e5d8cf);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+    .quick-tags-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.65rem;
+    }
+    .tag-chip-btn {
+      text-align: left;
+      padding: 0.55rem 0.7rem;
+      border-radius: 8px;
+      border: 1px solid var(--border, #e5d8cf);
+      background: #faf5f0;
+      cursor: pointer;
+    }
+    .tag-chip-btn:hover:not(:disabled) {
+      background: #f3ddd2;
+    }
+    .tag-chip-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .receipts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .receipt-card {
+      border: 1px solid var(--border, #e5d8cf);
+      border-radius: 10px;
+      padding: 0.9rem;
+      background: #fffdfb;
+    }
+  </style>
 </head>
 <body>
   <div class="app-shell">
@@ -21,6 +77,7 @@
 
       <ul class="nav-list" id="nav-list">
         <li><button class="nav-btn active" data-tab="dashboard">Dashboard</button></li>
+        <li><button class="nav-btn" data-tab="checkout">POS Checkout</button></li>
         <li><button class="nav-btn" data-tab="products">Products</button></li>
         <li><button class="nav-btn" data-tab="sales">Sales</button></li>
         <li><button class="nav-btn" data-tab="inventory">Inventory</button></li>
@@ -104,6 +161,138 @@
                 </thead>
                 <tbody id="recent-sales-tbody"></tbody>
               </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- POS CHECKOUT (MULTI-ITEM CART) -->
+        <section id="tab-checkout" class="tab-panel hidden">
+          <div id="checkout-banner" class="alert-box alert-info hidden" style="margin-bottom: 1rem;"></div>
+
+          <div class="grid-split-main">
+            <!-- Left: Scanner, Manual Add & Live Stock -->
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">1. Scan SKU / Camera / Quick Tags</h3>
+                </div>
+
+                <div class="form-group">
+                  <label for="pos-sku-input">Scan Barcode / QR or Type SKU (Press Enter)</label>
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="text" id="pos-sku-input" placeholder="e.g., CCMC-SP-001-L-BLK" />
+                    <button type="button" id="pos-sku-add-btn" class="btn btn-secondary btn-sm" style="white-space: nowrap;">Add SKU</button>
+                    <button type="button" id="pos-camera-btn" class="btn btn-secondary btn-sm" style="white-space: nowrap;">Scan Camera</button>
+                  </div>
+                  <small id="pos-scan-feedback" class="kpi-sub"></small>
+                  <div id="pos-qr-reader" class="hidden" style="margin-top: 0.65rem; border-radius: 8px; overflow: hidden;"></div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label>Catalog Quick-Scan Tags</label>
+                  <div id="pos-quick-tags" class="quick-tags-grid"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">2. Manual Item Selection</h3>
+                </div>
+                <form id="pos-manual-form" style="display: flex; gap: 0.5rem; align-items: flex-end; flex-wrap: wrap;">
+                  <div class="form-group" style="flex: 2; min-width: 200px; margin-bottom: 0;">
+                    <label for="pos-product-select">Product</label>
+                    <select id="pos-product-select"></select>
+                  </div>
+                  <div class="form-group" style="width: 90px; margin-bottom: 0;">
+                    <label for="pos-qty-input">Qty</label>
+                    <input type="number" id="pos-qty-input" min="1" step="1" value="1" required />
+                  </div>
+                  <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                </form>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Live Shelf Stock</h3>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>SKU</th>
+                        <th>Item &amp; Variant</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                      </tr>
+                    </thead>
+                    <tbody id="pos-stock-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Checkout Cart & Total Due -->
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Checkout Cart</h3>
+                  <button type="button" id="pos-clear-cart-btn" class="btn btn-secondary btn-sm">Clear</button>
+                </div>
+
+                <div class="form-group">
+                  <label for="pos-customer-select">Customer</label>
+                  <select id="pos-customer-select"></select>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody id="pos-cart-tbody">
+                      <tr><td colspan="4" class="kpi-sub">Cart is empty.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="cart-summary-box">
+                  <div class="cart-summary-row">
+                    <label for="pos-discount-input" style="margin: 0;">Transaction Discount (₱)</label>
+                    <input type="number" id="pos-discount-input" min="0" step="0.01" value="0" style="width: 120px; text-align: right;" />
+                  </div>
+                  <div class="cart-summary-row">
+                    <span class="kpi-sub">Gross Subtotal</span>
+                    <strong id="pos-subtotal">₱0.00</strong>
+                  </div>
+                  <div class="cart-summary-row">
+                    <span class="kpi-sub">Discount</span>
+                    <strong id="pos-discount-display">-₱0.00</strong>
+                  </div>
+                  <div class="cart-grand-total">
+                    <span>Total Due</span>
+                    <span id="pos-grand-total">₱0.00</span>
+                  </div>
+                </div>
+
+                <button type="button" id="pos-complete-btn" class="btn btn-primary w-full" style="margin-top: 1rem;">
+                  Complete Checkout &amp; Deduct Stock
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 1.25rem;">
+            <div class="card-header">
+              <h3 class="card-title">Session Checkout Receipts</h3>
+              <span id="pos-receipt-count" class="kpi-sub">0 receipts</span>
+            </div>
+            <div id="pos-receipts-log" class="receipts-grid">
+              <p class="kpi-sub">No checkouts completed yet in this session.</p>
             </div>
           </div>
         </section>
