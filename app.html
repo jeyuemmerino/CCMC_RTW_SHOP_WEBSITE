@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCMC RTW Shop — Management Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span>CCMC RTW Shop</span>
+        <div class="brand-title">Soft Luxury POS &amp; Stock</div>
+      </div>
+
+      <ul class="nav-list" id="nav-list">
+        <li><button class="nav-btn active" data-tab="dashboard">Dashboard</button></li>
+        <li><button class="nav-btn" data-tab="products">Products</button></li>
+        <li><button class="nav-btn" data-tab="sales">Sales</button></li>
+        <li><button class="nav-btn" data-tab="inventory">Inventory</button></li>
+        <li><button class="nav-btn" data-tab="reports">Reports &amp; P&amp;L</button></li>
+        <li><button class="nav-btn" data-tab="customers">Customers</button></li>
+        <li><button class="nav-btn owner-only" data-tab="users">Users &amp; Audit</button></li>
+        <li><button class="nav-btn owner-only" data-tab="settings">Settings</button></li>
+      </ul>
+    </aside>
+
+    <!-- Main Area -->
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <h2 id="page-title">Dashboard</h2>
+        </div>
+        <div class="topbar-right">
+          <span id="user-badge" class="role-pill">Loading...</span>
+          <button id="logout-btn" class="btn btn-secondary btn-sm no-print">Logout</button>
+        </div>
+      </header>
+
+      <main class="content-container">
+        <!-- 1. DASHBOARD -->
+        <section id="tab-dashboard" class="tab-panel">
+          <div class="kpi-grid" id="dashboard-kpis"></div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Sales by Category</h3>
+              </div>
+              <div id="category-bars"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Low-Stock &amp; Out-of-Stock Alerts</h3>
+              </div>
+              <div id="low-stock-list"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent Sales Transactions</h3>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sale ID</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Discount</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-sales-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. PRODUCTS -->
+        <section id="tab-products" class="tab-panel hidden">
+          <div class="grid-split-main">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Product Catalog</h3>
+              </div>
+              <div class="toolbar">
+                <input type="text" id="product-search" placeholder="Search SKU or name..." />
+                <select id="product-category-filter">
+                  <option value="ALL">All Categories</option>
+                  <option value="Sportswear">Sportswear</option>
+                  <option value="RTW Tops">RTW Tops</option>
+                  <option value="Outerwear">Outerwear</option>
+                  <option value="Accessories">Accessories</option>
+                </select>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>Product</th>
+                      <th>Size / Variant</th>
+                      <th>WAC Cost</th>
+                      <th>Price</th>
+                      <th>Stock</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Add / Update Product</h3>
+              </div>
+              <form id="product-form">
+                <div class="form-group">
+                  <label for="prod-sku">SKU / Barcode</label>
+                  <input type="text" id="prod-sku" placeholder="e.g., CCMC-106" required />
+                </div>
+                <div class="form-group">
+                  <label for="prod-name">Product Name</label>
+                  <input type="text" id="prod-name" placeholder="e.g., Dri-Fit Jogger Pants" required />
+                </div>
+                <div class="form-group">
+                  <label for="prod-category">Category</label>
+                  <select id="prod-category">
+                    <option value="Sportswear">Sportswear</option>
+                    <option value="RTW Tops">RTW Tops</option>
+                    <option value="Outerwear">Outerwear</option>
+                    <option value="Accessories">Accessories</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prod-size">Size / Variant</label>
+                  <input type="text" id="prod-size" placeholder="e.g., L / Black" required />
+                </div>
+                <div class="form-group">
+                  <label for="prod-cost">Unit Cost (₱)</label>
+                  <input type="number" id="prod-cost" min="0" step="0.01" required />
+                </div>
+                <div class="form-group">
+                  <label for="prod-price">Selling Price (₱)</label>
+                  <input type="number" id="prod-price" min="0" step="0.01" required />
+                </div>
+                <div class="form-group">
+                  <label for="prod-stock">Initial Stock Qty</label>
+                  <input type="number" id="prod-stock" min="0" step="1" value="0" required />
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Save Product</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. SALES PROCESSING -->
+        <section id="tab-sales" class="tab-panel hidden">
+          <div class="grid-split-main">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Record New Sale (Auto Stock Deduction)</h3>
+              </div>
+              <form id="sale-form">
+                <div class="form-group">
+                  <label for="sale-customer">Customer</label>
+                  <select id="sale-customer"></select>
+                </div>
+                <div class="form-group">
+                  <label for="sale-product">Product / Scan SKU</label>
+                  <select id="sale-product"></select>
+                </div>
+                <div class="form-group">
+                  <label for="sale-qty">Quantity</label>
+                  <input type="number" id="sale-qty" min="1" step="1" value="1" required />
+                </div>
+                <div class="form-group">
+                  <label for="sale-discount">Transaction Discount (₱)</label>
+                  <input type="number" id="sale-discount" min="0" step="0.01" value="0" />
+                </div>
+                <div class="alert-box alert-info" id="sale-preview">
+                  Estimated Total: ₱0.00
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Complete Sale</button>
+              </form>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Record Return / Exchange</h3>
+              </div>
+              <form id="return-form">
+                <div class="form-group">
+                  <label for="return-sale">Select Completed Sale</label>
+                  <select id="return-sale"></select>
+                </div>
+                <div class="form-group">
+                  <label for="return-qty">Return Quantity</label>
+                  <input type="number" id="return-qty" min="1" step="1" value="1" required />
+                </div>
+                <div class="form-group">
+                  <label for="return-refund">Refund Amount (₱)</label>
+                  <input type="number" id="return-refund" min="0" step="0.01" required />
+                </div>
+                <div class="form-group">
+                  <label for="return-condition">Item Condition</label>
+                  <select id="return-condition">
+                    <option value="resalable">Resalable (Restores Stock &amp; Reverses COGS)</option>
+                    <option value="damaged">Damaged (Classified as Inventory Loss)</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-secondary w-full">Process Return</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Sales Ledger</h3>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Discount</th>
+                    <th>Net Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="sales-ledger-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. INVENTORY (STOCK-IN WAC, LOSSES & EXPENSES) -->
+        <section id="tab-inventory" class="tab-panel hidden">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Stock-In (Weighted Average Cost)</h3>
+              </div>
+              <form id="stockin-form">
+                <div class="form-group">
+                  <label for="stockin-product">Product</label>
+                  <select id="stockin-product"></select>
+                </div>
+                <div class="form-group">
+                  <label for="stockin-qty">New Quantity Received (Qn)</label>
+                  <input type="number" id="stockin-qty" min="1" step="1" required />
+                </div>
+                <div class="form-group">
+                  <label for="stockin-cost">New Purchase Unit Cost (Cn in ₱)</label>
+                  <input type="number" id="stockin-cost" min="0" step="0.01" required />
+                </div>
+                <div class="form-group">
+                  <label for="stockin-reason">Remarks / Supplier</label>
+                  <input type="text" id="stockin-reason" placeholder="e.g., Restock from supplier" />
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Add Stock &amp; Recalculate WAC</button>
+              </form>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Record Inventory Loss or Operating Expense</h3>
+              </div>
+              <form id="loss-expense-form">
+                <div class="form-group">
+                  <label for="le-type">Record Type</label>
+                  <select id="le-type">
+                    <option value="loss">Inventory Loss (Damaged / Missing / Write-off)</option>
+                    <option value="expense">Operating Expense (Rent, Utilities, Wages, Transport)</option>
+                  </select>
+                </div>
+                <div id="loss-fields">
+                  <div class="form-group">
+                    <label for="loss-product">Affected Product</label>
+                    <select id="loss-product"></select>
+                  </div>
+                  <div class="form-group">
+                    <label for="loss-qty">Damaged/Lost Qty</label>
+                    <input type="number" id="loss-qty" min="1" step="1" value="1" />
+                  </div>
+                  <div class="form-group">
+                    <label for="loss-reason">Reason</label>
+                    <input type="text" id="loss-reason" placeholder="e.g., Fabric stain / write-off" />
+                  </div>
+                </div>
+                <div id="expense-fields" class="hidden">
+                  <div class="form-group">
+                    <label for="exp-category">Expense Category</label>
+                    <select id="exp-category">
+                      <option value="Rent">Rent</option>
+                      <option value="Utilities">Utilities</option>
+                      <option value="Wages">Staff Wages</option>
+                      <option value="Transportation">Transportation</option>
+                      <option value="Supplies">Supplies</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="exp-amount">Amount (₱)</label>
+                    <input type="number" id="exp-amount" min="0" step="0.01" />
+                  </div>
+                  <div class="form-group">
+                    <label for="exp-notes">Notes</label>
+                    <input type="text" id="exp-notes" placeholder="e.g., Monthly stall electricity" />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-secondary w-full">Save Entry</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Stock Movement History</h3>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Type</th>
+                    <th>Qty</th>
+                    <th>Unit Cost</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="stock-history-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. REPORTS & PROFIT AND LOSS -->
+        <section id="tab-reports" class="tab-panel hidden">
+          <div class="card" style="margin-bottom: 1.25rem;">
+            <div class="card-header">
+              <h3 class="card-title">Profit &amp; Loss Statement</h3>
+              <button class="btn btn-secondary btn-sm no-print" onclick="window.print()">Print Report</button>
+            </div>
+            <div id="pnl-provisional-banner" class="alert-box alert-info hidden">
+              <strong>Provisional Net Profit:</strong> Operating expense records are incomplete (e.g., Rent or Utilities not yet logged), so net profit may not reflect full period expenses.
+            </div>
+            <div id="pnl-restricted-msg" class="alert-box alert-error hidden">
+              Access Restricted: Detailed Profit &amp; Loss reports are available to authorized Shop Owners only.
+            </div>
+            <div class="table-wrap" id="pnl-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Line Item</th>
+                    <th>Amount / Margin</th>
+                  </tr>
+                </thead>
+                <tbody id="pnl-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. CUSTOMERS -->
+        <section id="tab-customers" class="tab-panel hidden">
+          <div class="grid-split-main">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Customer Directory &amp; Purchase Summary</h3>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Contact</th>
+                      <th>Orders</th>
+                      <th>Total Spent</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customers-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Register Customer</h3>
+              </div>
+              <form id="customer-form">
+                <div class="form-group">
+                  <label for="cust-name">Full Name</label>
+                  <input type="text" id="cust-name" required />
+                </div>
+                <div class="form-group">
+                  <label for="cust-contact">Contact Number</label>
+                  <input type="text" id="cust-contact" placeholder="09XX-XXX-XXXX" />
+                </div>
+                <div class="form-group">
+                  <label for="cust-notes">Notes / Preferred Apparel</label>
+                  <input type="text" id="cust-notes" placeholder="e.g., Regular L sportswear buyer" />
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Add Customer</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. USERS & AUDIT TRAIL (OWNER ONLY) -->
+        <section id="tab-users" class="tab-panel hidden">
+          <div class="grid-split-main">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">System Users</h3>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Username</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Create User Account</h3>
+              </div>
+              <form id="user-form">
+                <div class="form-group">
+                  <label for="new-user-name">Full Name</label>
+                  <input type="text" id="new-user-name" required />
+                </div>
+                <div class="form-group">
+                  <label for="new-user-username">Username</label>
+                  <input type="text" id="new-user-username" required />
+                </div>
+                <div class="form-group">
+                  <label for="new-user-password">Password</label>
+                  <input type="password" id="new-user-password" required />
+                </div>
+                <div class="form-group">
+                  <label for="new-user-role">Role</label>
+                  <select id="new-user-role">
+                    <option value="Staff">Staff</option>
+                    <option value="Owner">Owner</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Create Account</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Audit Trail</h3>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Activity</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. SETTINGS (OWNER ONLY) -->
+        <section id="tab-settings" class="tab-panel hidden">
+          <div class="card" style="max-width: 520px;">
+            <div class="card-header">
+              <h3 class="card-title">System Configuration</h3>
+            </div>
+            <form id="settings-form">
+              <div class="form-group">
+                <label for="low-stock-threshold">Low-Stock Alert Threshold (Units)</label>
+                <input type="number" id="low-stock-threshold" min="1" step="1" required />
+              </div>
+              <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                <button type="submit" class="btn btn-primary">Save Settings</button>
+                <button type="button" id="reset-demo-btn" class="btn btn-danger">Clear System Data</button>
+              </div>
+              <p id="settings-feedback" class="kpi-sub" style="margin-top: 0.75rem;"></p>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
