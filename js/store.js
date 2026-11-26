@@ -62,35 +62,82 @@ function computeWeightedAverageCost(existingQty, existingCost, newQty, newCost) 
 }
 
 /**
- * Profit & Loss Computation per CCMC RTW Shop rules
+ * Date range helper: "all" | "daily" | "weekly" | "monthly" | "custom"
+ * options = { startDate: "YYYY-MM-DD", endDate: "YYYY-MM-DD" }
  */
-function computeProfitAndLoss(state) {
-  const activeSales = state.sales.filter((s) => s.status !== "Voided");
+function isDateInPeriod(dateStr, period = "all", options = {}) {
+  if (!period || period === "all") return true;
+  if (!dateStr) return false;
+
+  if (period === "custom") {
+    const { startDate, endDate } = options;
+    if (startDate && dateStr < startDate) return false;
+    if (endDate && dateStr > endDate) return false;
+    return true;
+  }
+
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+
+  if (period === "daily") {
+    return dateStr === todayStr;
+  }
+
+  const target = new Date(dateStr + "T00:00:00");
+  if (Number.isNaN(target.getTime())) return true;
+
+  if (period === "weekly") {
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+    return target >= sevenDaysAgo;
+  }
+
+  if (period === "monthly") {
+    return (
+      target.getFullYear() === today.getFullYear() &&
+      target.getMonth() === today.getMonth()
+    );
+  }
+
+  return true;
+}
+
+/**
+ * Profit & Loss Computation per CCMC RTW Shop rules (supports period & custom dates)
+ */
+function computeProfitAndLoss(state, period = "all", options = {}) {
+  const activeSales = state.sales.filter(
+    (s) => s.status !== "Voided" && isDateInPeriod(s.date, period, options)
+  );
+  const periodReturns = state.returns.filter((r) => isDateInPeriod(r.date, period, options));
+  const periodLosses = state.inventoryLosses.filter((l) => isDateInPeriod(l.date, period, options));
+  const periodExpenses = state.expenses.filter((e) => isDateInPeriod(e.date, period, options));
 
   const grossSales = activeSales.reduce((sum, s) => sum + s.unitPrice * s.qty, 0);
   const discounts = activeSales.reduce((sum, s) => sum + (Number(s.discount) || 0), 0);
-  const salesReturns = state.returns.reduce((sum, r) => sum + (Number(r.refundAmount) || 0), 0);
+  const salesReturns = periodReturns.reduce((sum, r) => sum + (Number(r.refundAmount) || 0), 0);
   const netSales = grossSales - discounts - salesReturns;
 
   const rawCogs = activeSales.reduce((sum, s) => sum + s.unitCostAtSale * s.qty, 0);
-  const returnedCostReversal = state.returns.reduce((sum, r) => sum + (Number(r.unitCost) || 0) * r.qty, 0);
+  const returnedCostReversal = periodReturns.reduce((sum, r) => sum + (Number(r.unitCost) || 0) * r.qty, 0);
   const cogs = Math.max(0, rawCogs - returnedCostReversal);
 
   const grossProfit = netSales - cogs;
   const grossMargin = netSales > 0 ? ((grossProfit / netSales) * 100).toFixed(1) + "%" : "N/A";
 
-  const damagedReturnLosses = state.returns
+  const damagedReturnLosses = periodReturns
     .filter((r) => !r.resalable)
     .reduce((sum, r) => sum + (Number(r.unitCost) || 0) * r.qty, 0);
 
-  const recordedLosses = state.inventoryLosses.reduce((sum, l) => sum + (Number(l.lossAmount) || 0), 0);
+  const recordedLosses = periodLosses.reduce((sum, l) => sum + (Number(l.lossAmount) || 0), 0);
   const inventoryLosses = damagedReturnLosses + recordedLosses;
 
-  const operatingExpenses = state.expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+  const operatingExpenses = periodExpenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
   const netProfit = grossProfit - inventoryLosses - operatingExpenses;
   const netMargin = netSales > 0 ? ((netProfit / netSales) * 100).toFixed(1) + "%" : "N/A";
 
-  const categories = new Set(state.expenses.map((e) => e.category.toLowerCase()));
+  const categories = new Set(periodExpenses.map((e) => e.category.toLowerCase()));
   const isProvisional = !(categories.has("rent") && categories.has("utilities"));
 
   return {

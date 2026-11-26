@@ -1,5 +1,7 @@
 const session = requireAuth();
 let state = loadState();
+let html5QrScanner = null;
+let isCameraScanning = false;
 
 const pageTitles = {
   dashboard: "Dashboard",
@@ -36,6 +38,10 @@ function initShell() {
 }
 
 function switchTab(tabName) {
+  if (tabName !== "sales" && isCameraScanning) {
+    stopCameraScanner();
+  }
+
   document.querySelectorAll(".nav-btn").forEach((b) => {
     b.classList.toggle("active", b.dataset.tab === tabName);
   });
@@ -44,6 +50,10 @@ function switchTab(tabName) {
   });
   document.getElementById("page-title").textContent = pageTitles[tabName] || "CCMC RTW Shop";
   renderAll();
+
+  if (tabName === "sales") {
+    document.getElementById("sale-sku-scan")?.focus();
+  }
 }
 
 function renderAll() {
@@ -59,8 +69,26 @@ function renderAll() {
   renderSettings();
 }
 
+function getDateFilterValues(periodId, startId, endId) {
+  const period = document.getElementById(periodId)?.value || "all";
+  const startDate = document.getElementById(startId)?.value || "";
+  const endDate = document.getElementById(endId)?.value || "";
+  return { period, options: { startDate, endDate } };
+}
+
+function syncCustomDateVisibility(periodId, containerId) {
+  const period = document.getElementById(periodId)?.value || "all";
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.classList.toggle("hidden", period !== "custom");
+  }
+}
+
 function renderDashboard() {
-  const pnl = computeProfitAndLoss(state);
+  syncCustomDateVisibility("dash-period", "dash-custom-dates");
+  const { period, options } = getDateFilterValues("dash-period", "dash-start-date", "dash-end-date");
+
+  const pnl = computeProfitAndLoss(state, period, options);
   const lowStockItems = state.products.filter((p) => p.stock <= state.lowStockThreshold);
 
   const kpisHtml = `
@@ -87,10 +115,10 @@ function renderDashboard() {
   `;
   document.getElementById("dashboard-kpis").innerHTML = kpisHtml;
 
-  // Category bars
+  // Category bars filtered by selected date period
   const catTotals = {};
   state.sales
-    .filter((s) => s.status !== "Voided")
+    .filter((s) => s.status !== "Voided" && isDateInPeriod(s.date, period, options))
     .forEach((s) => {
       const prod = state.products.find((p) => p.sku === s.sku);
       const cat = prod ? prod.category : "Sportswear";
@@ -111,7 +139,7 @@ function renderDashboard() {
         </div>`
         )
         .join("")
-    : `<p class="kpi-sub">No completed sales yet.</p>`;
+    : `<p class="kpi-sub">No completed sales in this date range.</p>`;
 
   // Low stock list
   const lowContainer = document.getElementById("low-stock-list");
@@ -129,29 +157,36 @@ function renderDashboard() {
         .join("")
     : `<span class="badge badge-success">All products are well stocked</span>`;
 
-  // Recent sales
+  // Recent sales filtered by selected date period
+  const filteredSales = state.sales.filter((s) => isDateInPeriod(s.date, period, options));
   const recentTbody = document.getElementById("recent-sales-tbody");
-  recentTbody.innerHTML = state.sales
-    .slice()
-    .reverse()
-    .slice(0, 6)
-    .map((s) => {
-      const total = Math.max(0, s.unitPrice * s.qty - (Number(s.discount) || 0));
-      const badgeClass = s.status === "Voided" ? "badge-danger" : "badge-success";
-      return `
-        <tr>
-          <td>${s.id}</td>
-          <td>${s.date}</td>
-          <td>${s.customerName}</td>
-          <td>${s.productName}</td>
-          <td>${s.qty}</td>
-          <td>${formatPeso(s.discount)}</td>
-          <td>${formatPeso(total)}</td>
-          <td><span class="badge ${badgeClass}">${s.status}</span></td>
-        </tr>`;
-    })
-    .join("");
+  recentTbody.innerHTML = filteredSales.length
+    ? filteredSales
+        .slice()
+        .reverse()
+        .slice(0, 6)
+        .map((s) => {
+          const total = Math.max(0, s.unitPrice * s.qty - (Number(s.discount) || 0));
+          const badgeClass = s.status === "Voided" ? "badge-danger" : "badge-success";
+          return `
+            <tr>
+              <td>${s.id}</td>
+              <td>${s.date}</td>
+              <td>${s.customerName}</td>
+              <td>${s.productName}</td>
+              <td>${s.qty}</td>
+              <td>${formatPeso(s.discount)}</td>
+              <td>${formatPeso(total)}</td>
+              <td><span class="badge ${badgeClass}">${s.status}</span></td>
+            </tr>`;
+        })
+        .join("")
+    : `<tr><td colspan="8" class="kpi-sub">No sales transactions in this date range.</td></tr>`;
 }
+
+["dash-period", "dash-start-date", "dash-end-date"].forEach((id) => {
+  document.getElementById(id).addEventListener("change", renderDashboard);
+});
 
 function renderProducts() {
   const q = (document.getElementById("product-search")?.value || "").toLowerCase();
@@ -210,15 +245,96 @@ document.getElementById("product-form").addEventListener("submit", (e) => {
   renderAll();
 });
 
+function parseAndImportProducts(rawText) {
+  const lines = rawText
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  let importedCount = 0;
+
+  lines.forEach((line, index) => {
+    const parts = line.split(",").map((p) => p.trim());
+    if (parts.length < 7) return;
+    if (index === 0 && parts[0].toLowerCase() === "sku") return;
+
+    const [skuRaw, name, category, sizeVariant, costRaw, priceRaw, stockRaw] = parts;
+    const sku = skuRaw.toUpperCase();
+    const unitCost = Number(costRaw) || 0;
+    const sellingPrice = Number(priceRaw) || 0;
+    const stock = parseInt(stockRaw, 10) || 0;
+
+    if (!sku || !name) return;
+
+    const existingIndex = state.products.findIndex((p) => p.sku === sku);
+    if (existingIndex >= 0) {
+      state.products[existingIndex] = {
+        ...state.products[existingIndex],
+        name,
+        category: category || "Sportswear",
+        sizeVariant: sizeVariant || "Free Size",
+        unitCost,
+        sellingPrice,
+        stock
+      };
+    } else {
+      state.products.push({
+        sku,
+        name,
+        category: category || "Sportswear",
+        sizeVariant: sizeVariant || "Free Size",
+        unitCost,
+        sellingPrice,
+        stock
+      });
+    }
+    importedCount++;
+  });
+
+  if (importedCount > 0) {
+    logAudit(state, session.username, session.role, `Bulk imported/updated ${importedCount} products`);
+    saveState(state);
+    renderAll();
+  }
+
+  return importedCount;
+}
+
+document.getElementById("bulk-csv-file").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    document.getElementById("bulk-products-text").value = event.target.result;
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById("bulk-import-btn").addEventListener("click", () => {
+  const text = document.getElementById("bulk-products-text").value;
+  const count = parseAndImportProducts(text);
+  const feedback = document.getElementById("bulk-feedback");
+
+  if (count > 0) {
+    feedback.textContent = `Successfully imported ${count} product(s).`;
+    document.getElementById("bulk-products-text").value = "";
+    document.getElementById("bulk-csv-file").value = "";
+  } else {
+    feedback.textContent = "No valid rows found. Check that each line has 7 comma-separated values.";
+  }
+});
+
 function populateSalesAndInventoryDropdowns() {
   const custSelect = document.getElementById("sale-customer");
   custSelect.innerHTML = state.customers
     .map((c) => `<option value="${c.id}">${c.name}</option>`)
     .join("");
 
-  const prodOptions = state.products
-    .map((p) => `<option value="${p.sku}">${p.sku} — ${p.name} (${p.stock} in stock | ${formatPeso(p.sellingPrice)})</option>`)
-    .join("");
+  const prodOptions = state.products.length
+    ? state.products
+        .map((p) => `<option value="${p.sku}">${p.sku} — ${p.name} (${p.stock} in stock | ${formatPeso(p.sellingPrice)})</option>`)
+        .join("")
+    : `<option value="">No products available — add products first</option>`;
 
   document.getElementById("sale-product").innerHTML = prodOptions;
   document.getElementById("stockin-product").innerHTML = prodOptions;
@@ -234,10 +350,90 @@ function populateSalesAndInventoryDropdowns() {
   updateSalePreview();
 }
 
+function applyScannedSku(rawCode) {
+  const code = String(rawCode || "").trim().toUpperCase();
+  const scanMsg = document.getElementById("scan-feedback");
+  if (!code) return false;
+
+  const matched = state.products.find((p) => p.sku.toUpperCase() === code);
+  if (matched) {
+    document.getElementById("sale-product").value = matched.sku;
+    scanMsg.textContent = `Matched: ${matched.name} (${matched.sizeVariant}) — ${matched.stock} in stock`;
+    document.getElementById("sale-sku-scan").value = "";
+    updateSalePreview();
+    return true;
+  }
+
+  scanMsg.textContent = `SKU "${code}" not found in catalog.`;
+  return false;
+}
+
+// Fast SKU / Barcode Scanner Lookup in Sales (USB/Bluetooth scanners type code + Enter)
+document.getElementById("sale-sku-scan").addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+  applyScannedSku(e.target.value);
+});
+
+async function stopCameraScanner() {
+  const readerEl = document.getElementById("qr-reader");
+  const btnEl = document.getElementById("toggle-camera-btn");
+
+  if (html5QrScanner && isCameraScanning) {
+    try {
+      await html5QrScanner.stop();
+      await html5QrScanner.clear();
+    } catch {
+      // Ignore cleanup errors if camera already stopped
+    }
+  }
+  isCameraScanning = false;
+  if (readerEl) readerEl.classList.add("hidden");
+  if (btnEl) btnEl.textContent = "Scan Camera";
+}
+
+document.getElementById("toggle-camera-btn").addEventListener("click", async () => {
+  const scanMsg = document.getElementById("scan-feedback");
+  const readerEl = document.getElementById("qr-reader");
+  const btnEl = document.getElementById("toggle-camera-btn");
+
+  if (isCameraScanning) {
+    await stopCameraScanner();
+    return;
+  }
+
+  if (typeof Html5Qrcode === "undefined") {
+    scanMsg.textContent = "Camera scanner library failed to load. Check internet connection or type SKU directly.";
+    return;
+  }
+
+  readerEl.classList.remove("hidden");
+  btnEl.textContent = "Stop Camera";
+  scanMsg.textContent = "Starting camera...";
+
+  try {
+    html5QrScanner = new Html5Qrcode("qr-reader");
+    await html5QrScanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 220, height: 140 } },
+      async (decodedText) => {
+        applyScannedSku(decodedText);
+        await stopCameraScanner();
+      },
+      () => {}
+    );
+    isCameraScanning = true;
+    scanMsg.textContent = "Point camera at a barcode or QR code...";
+  } catch {
+    scanMsg.textContent = "Unable to access camera. Allow permission or use a USB scanner / type SKU.";
+    await stopCameraScanner();
+  }
+});
+
 function updateSalePreview() {
   const sku = document.getElementById("sale-product").value;
   const qty = Number(document.getElementById("sale-qty").value) || 0;
-  const disc = Number(document.getElementById("sale-discount").value) || 0;
+  const disc = Math.max(0, Number(document.getElementById("sale-discount").value) || 0);
   const prod = state.products.find((p) => p.sku === sku);
   const subtotal = prod ? prod.sellingPrice * qty : 0;
   const net = Math.max(0, subtotal - disc);
@@ -254,7 +450,7 @@ document.getElementById("sale-form").addEventListener("submit", (e) => {
   const custId = document.getElementById("sale-customer").value;
   const sku = document.getElementById("sale-product").value;
   const qty = parseInt(document.getElementById("sale-qty").value, 10);
-  const discount = Number(document.getElementById("sale-discount").value) || 0;
+  const discount = Math.max(0, Number(document.getElementById("sale-discount").value) || 0);
 
   const prod = state.products.find((p) => p.sku === sku);
   const cust = state.customers.find((c) => c.id === custId) || state.customers[0];
@@ -283,6 +479,7 @@ document.getElementById("sale-form").addEventListener("submit", (e) => {
   logAudit(state, session.username, session.role, `Recorded sale ${saleId}: ${qty}x ${prod.name}`);
   saveState(state);
   e.target.reset();
+  document.getElementById("scan-feedback").textContent = "";
   renderAll();
 });
 
@@ -488,16 +685,34 @@ function renderStockHistory() {
 }
 
 function renderReports() {
+  syncCustomDateVisibility("report-period", "report-custom-dates");
   const isOwner = session.role === "Owner";
+  const { period, options } = getDateFilterValues("report-period", "report-start-date", "report-end-date");
+
   document.getElementById("pnl-restricted-msg").classList.toggle("hidden", isOwner);
   document.getElementById("pnl-table-wrap").classList.toggle("hidden", !isOwner);
+
+  // Inventory Valuation Summary (visible to Owner & Staff)
+  document.getElementById("inventory-report-tbody").innerHTML = state.products
+    .map(
+      (p) => `
+      <tr>
+        <td>${p.sku}</td>
+        <td>${p.name} (${p.sizeVariant})</td>
+        <td>${p.category}</td>
+        <td>${p.stock}</td>
+        <td>${formatPeso(p.unitCost)}</td>
+        <td>${formatPeso(p.stock * p.unitCost)}</td>
+      </tr>`
+    )
+    .join("");
 
   if (!isOwner) {
     document.getElementById("pnl-provisional-banner").classList.add("hidden");
     return;
   }
 
-  const pnl = computeProfitAndLoss(state);
+  const pnl = computeProfitAndLoss(state, period, options);
   document.getElementById("pnl-provisional-banner").classList.toggle("hidden", !pnl.isProvisional);
 
   const rows = [
@@ -516,6 +731,63 @@ function renderReports() {
     .map(([label, val]) => `<tr><td>${label}</td><td>${val}</td></tr>`)
     .join("");
 }
+
+["report-period", "report-start-date", "report-end-date"].forEach((id) => {
+  document.getElementById(id).addEventListener("change", renderReports);
+});
+
+document.getElementById("export-report-btn").addEventListener("click", () => {
+  const isOwner = session.role === "Owner";
+  const { period, options } = getDateFilterValues("report-period", "report-start-date", "report-end-date");
+  const pnl = computeProfitAndLoss(state, period, options);
+
+  const rangeLabel =
+    period === "custom"
+      ? `CUSTOM (${options.startDate || "Start"} to ${options.endDate || "End"})`
+      : period.toUpperCase();
+
+  const csvLines = [
+    ["CCMC RTW Shop Report", `Period: ${rangeLabel}`, `Generated: ${new Date().toLocaleDateString()}`].join(","),
+    ""
+  ];
+
+  // Include Profit & Loss ONLY for authorized Owners
+  if (isOwner) {
+    csvLines.push(
+      "PROFIT & LOSS SUMMARY",
+      "Line Item,Amount",
+      `Gross Sales,${pnl.grossSales.toFixed(2)}`,
+      `Discounts,${pnl.discounts.toFixed(2)}`,
+      `Sales Returns,${pnl.salesReturns.toFixed(2)}`,
+      `Net Sales,${pnl.netSales.toFixed(2)}`,
+      `Cost of Goods Sold (COGS),${pnl.cogs.toFixed(2)}`,
+      `Gross Profit,${pnl.grossProfit.toFixed(2)}`,
+      `Inventory Losses,${pnl.inventoryLosses.toFixed(2)}`,
+      `Operating Expenses,${pnl.operatingExpenses.toFixed(2)}`,
+      `Net Profit,${pnl.netProfit.toFixed(2)}`,
+      ""
+    );
+  }
+
+  csvLines.push(
+    "INVENTORY SUMMARY",
+    "SKU,Product Name,Category,Size/Variant,Stock Qty,WAC Unit Cost,Selling Price",
+    ...state.products.map(
+      (p) => `"${p.sku}","${p.name}","${p.category}","${p.sizeVariant}",${p.stock},${p.unitCost},${p.sellingPrice}`
+    )
+  );
+
+  const blob = new Blob([csvLines.join("\n")], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `CCMC_RTW_${isOwner ? "Full_Report" : "Inventory_Report"}_${period}_${new Date().toISOString().slice(0, 10)}.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+
+  logAudit(state, session.username, session.role, `Exported ${rangeLabel} ${isOwner ? "Full" : "Inventory"} CSV report`);
+  saveState(state);
+});
 
 function renderCustomers() {
   document.getElementById("customers-tbody").innerHTML = state.customers

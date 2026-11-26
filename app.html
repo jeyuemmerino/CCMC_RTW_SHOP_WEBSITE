@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/html5-qrcode" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -45,6 +46,26 @@
       <main class="content-container">
         <!-- 1. DASHBOARD -->
         <section id="tab-dashboard" class="tab-panel">
+          <div class="card" style="margin-bottom: 1.25rem;">
+            <div class="card-header" style="margin-bottom: 0;">
+              <h3 class="card-title">Analytics Overview</h3>
+              <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <select id="dash-period" style="width: auto;">
+                  <option value="all">All Time</option>
+                  <option value="daily">Daily (Today)</option>
+                  <option value="weekly">Weekly (Last 7 Days)</option>
+                  <option value="monthly">Monthly (This Month)</option>
+                  <option value="custom">Custom Date Range</option>
+                </select>
+                <span id="dash-custom-dates" class="hidden" style="display: inline-flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+                  <input type="date" id="dash-start-date" style="width: auto;" />
+                  <span class="kpi-sub">to</span>
+                  <input type="date" id="dash-end-date" style="width: auto;" />
+                </span>
+              </div>
+            </div>
+          </div>
+
           <div class="kpi-grid" id="dashboard-kpis"></div>
 
           <div class="grid-2">
@@ -122,46 +143,65 @@
               </div>
             </div>
 
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Add / Update Product</h3>
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Add / Update Single Product</h3>
+                </div>
+                <form id="product-form">
+                  <div class="form-group">
+                    <label for="prod-sku">SKU / Barcode</label>
+                    <input type="text" id="prod-sku" placeholder="e.g., CCMC-SP-001-L-BLK" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="prod-name">Product Name</label>
+                    <input type="text" id="prod-name" placeholder="e.g., Dry-Fit Pro Training Tee" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="prod-category">Category</label>
+                    <select id="prod-category">
+                      <option value="Sportswear">Sportswear</option>
+                      <option value="RTW Tops">RTW Tops</option>
+                      <option value="Outerwear">Outerwear</option>
+                      <option value="Accessories">Accessories</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="prod-size">Size / Variant</label>
+                    <input type="text" id="prod-size" placeholder="e.g., L / Black" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="prod-cost">Unit Cost (₱)</label>
+                    <input type="number" id="prod-cost" min="0" step="0.01" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="prod-price">Selling Price (₱)</label>
+                    <input type="number" id="prod-price" min="0" step="0.01" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="prod-stock">Initial Stock Qty</label>
+                    <input type="number" id="prod-stock" min="0" step="1" value="0" required />
+                  </div>
+                  <button type="submit" class="btn btn-primary w-full">Save Product</button>
+                </form>
               </div>
-              <form id="product-form">
-                <div class="form-group">
-                  <label for="prod-sku">SKU / Barcode</label>
-                  <input type="text" id="prod-sku" placeholder="e.g., CCMC-106" required />
+
+              <!-- BULK IMPORT CARD -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Bulk Import Products</h3>
                 </div>
                 <div class="form-group">
-                  <label for="prod-name">Product Name</label>
-                  <input type="text" id="prod-name" placeholder="e.g., Dri-Fit Jogger Pants" required />
+                  <label for="bulk-csv-file">Upload CSV File (Optional)</label>
+                  <input type="file" id="bulk-csv-file" accept=".csv,.txt" />
                 </div>
                 <div class="form-group">
-                  <label for="prod-category">Category</label>
-                  <select id="prod-category">
-                    <option value="Sportswear">Sportswear</option>
-                    <option value="RTW Tops">RTW Tops</option>
-                    <option value="Outerwear">Outerwear</option>
-                    <option value="Accessories">Accessories</option>
-                  </select>
+                  <label for="bulk-products-text">Or Paste Rows (SKU, Name, Category, Size, Cost, Price, Stock)</label>
+                  <textarea id="bulk-products-text" rows="5" placeholder="CCMC-SP-001-L-BLK,Dry-Fit Tee,Sportswear,L / Black,160,280,25"></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="prod-size">Size / Variant</label>
-                  <input type="text" id="prod-size" placeholder="e.g., L / Black" required />
-                </div>
-                <div class="form-group">
-                  <label for="prod-cost">Unit Cost (₱)</label>
-                  <input type="number" id="prod-cost" min="0" step="0.01" required />
-                </div>
-                <div class="form-group">
-                  <label for="prod-price">Selling Price (₱)</label>
-                  <input type="number" id="prod-price" min="0" step="0.01" required />
-                </div>
-                <div class="form-group">
-                  <label for="prod-stock">Initial Stock Qty</label>
-                  <input type="number" id="prod-stock" min="0" step="1" value="0" required />
-                </div>
-                <button type="submit" class="btn btn-primary w-full">Save Product</button>
-              </form>
+                <button type="button" id="bulk-import-btn" class="btn btn-secondary w-full">Import All Products</button>
+                <p id="bulk-feedback" class="kpi-sub" style="margin-top: 0.65rem;"></p>
+              </div>
             </div>
           </div>
         </section>
@@ -175,11 +215,22 @@
               </div>
               <form id="sale-form">
                 <div class="form-group">
-                  <label for="sale-customer">Customer</label>
+                  <label for="sale-customer">Customer (Optional — defaults to Walk-in)</label>
                   <select id="sale-customer"></select>
                 </div>
                 <div class="form-group">
-                  <label for="sale-product">Product / Scan SKU</label>
+                  <label for="sale-sku-scan">Quick Scan / Type SKU (Press Enter)</label>
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="text" id="sale-sku-scan" placeholder="Scan barcode/QR or type SKU..." />
+                    <button type="button" id="toggle-camera-btn" class="btn btn-secondary btn-sm" style="white-space: nowrap;">
+                      Scan Camera
+                    </button>
+                  </div>
+                  <small id="scan-feedback" class="kpi-sub"></small>
+                  <div id="qr-reader" class="hidden" style="margin-top: 0.65rem; border-radius: 8px; overflow: hidden;"></div>
+                </div>
+                <div class="form-group">
+                  <label for="sale-product">Select Product</label>
                   <select id="sale-product"></select>
                 </div>
                 <div class="form-group">
@@ -357,8 +408,23 @@
         <section id="tab-reports" class="tab-panel hidden">
           <div class="card" style="margin-bottom: 1.25rem;">
             <div class="card-header">
-              <h3 class="card-title">Profit &amp; Loss Statement</h3>
-              <button class="btn btn-secondary btn-sm no-print" onclick="window.print()">Print Report</button>
+              <h3 class="card-title">Profit &amp; Loss &amp; Sales Summary</h3>
+              <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;" class="no-print">
+                <select id="report-period" style="width: auto;">
+                  <option value="all">All Time</option>
+                  <option value="daily">Daily (Today)</option>
+                  <option value="weekly">Weekly (Last 7 Days)</option>
+                  <option value="monthly">Monthly (This Month)</option>
+                  <option value="custom">Custom Date Range</option>
+                </select>
+                <span id="report-custom-dates" class="hidden" style="display: inline-flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+                  <input type="date" id="report-start-date" style="width: auto;" />
+                  <span class="kpi-sub">to</span>
+                  <input type="date" id="report-end-date" style="width: auto;" />
+                </span>
+                <button type="button" id="export-report-btn" class="btn btn-secondary btn-sm">Export CSV</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="window.print()">Print Report</button>
+              </div>
             </div>
             <div id="pnl-provisional-banner" class="alert-box alert-info hidden">
               <strong>Provisional Net Profit:</strong> Operating expense records are incomplete (e.g., Rent or Utilities not yet logged), so net profit may not reflect full period expenses.
@@ -375,6 +441,27 @@
                   </tr>
                 </thead>
                 <tbody id="pnl-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Inventory Valuation Summary</h3>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Stock Qty</th>
+                    <th>WAC Unit Cost</th>
+                    <th>Total Inventory Value</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-report-tbody"></tbody>
               </table>
             </div>
           </div>
